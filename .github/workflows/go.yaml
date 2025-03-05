@@ -1,0 +1,79 @@
+name: Go
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Download dependencies
+        run: go mod download
+
+      - name: Verify code base on PR
+        if: ${{github.event_name}} == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+        run: make .pr-check
+
+      - name: Verify code base on push
+        if: ${{github.event_name}} == 'push'
+        run: make .main-check
+
+      - name: Unit test
+        run: make test/unit
+
+      - name: Upload unit test coverage
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unit
+          files: ./target/test/unit/cov/txt/cover.txt
+
+      - name: Upload unit test results
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unit
+          files: ./target/test/unit/junit/junit.xml
+
+      - name: Application test
+        run: make test/application
+
+      - name: Upload application test
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: application
+          files: ./target/test/application/cov/txt/cover.txt
+
+      - name: Upload application test results
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: application
+          files: ./target/test/application/junit/junit.xml
+
+      - name: Lint
+        run: make lint
+
+      - name: Build binaries
+        run: make bin
+
+      - name: Build images
+        run: make img

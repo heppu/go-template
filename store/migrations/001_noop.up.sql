@@ -1,0 +1,2 @@
+-- This is empty example migration file to trigger the migration process
+-- and to create the migration table in the database.
