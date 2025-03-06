@@ -1,9 +1,7 @@
-# Requirements:
+## Requirements:
 #	- go
 #	- awk
 #	- printf
-
-.DEFAULT_GOAL := help
 
 ### Environment variables
 
@@ -46,6 +44,7 @@ IMG_TAGS          ?= dev
 IMG_TARGET_ARGS = ${IMG_TAGS:%=-t ${IMG_NAME}:%}
 IMG_BUILD_ARGS  = --build-arg TARGET=${TARGET}
 
+.DEFAULT_GOAL := help
 .PHONY: help
 help: ## Display help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nStatic targets:\n"} /^[a-zA-Z0-9_\/-]+:.*?##/ { printf "  \033[36m%-20s\033[0m  %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
@@ -123,6 +122,7 @@ ${IMG_TARGETS}:
 
 .PHONY: .check-duplicated-migrations
 .ONESHELL:
+SHELL = /bin/bash
 .check-duplicated-migrations:
 	@echo "Performing duplicated migration check"
 	output="$$(ls -1 store/migrations/ | cut -d "_" -f1 | uniq -D)"
@@ -131,9 +131,11 @@ ${IMG_TARGETS}:
 		echo "$$output"
 		exit 1
 	fi
+	echo "No duplicated migrations found"
 
 .PHONY: .check-modified-migrations
 .ONESHELL:
+SHELL = /bin/bash
 .check-modified-migrations:
 	@if test -z "$$BASE_REF"; then
 		echo "BASE_REF must be set"
@@ -147,6 +149,7 @@ ${IMG_TARGETS}:
 	git fetch origin $$BASE_REF
 	git fetch origin $$HEAD_REF
 	git diff --exit-code --name-only --diff-filter=D origin/$$BASE_REF origin/$$HEAD_REF -- store/migrations/ || (echo "main branch has new migrations, please rebase" && exit 1)
+	echo "No modified migrations found"
 
 .PHONY: .check-generated-code
 .check-generated-code: generate
