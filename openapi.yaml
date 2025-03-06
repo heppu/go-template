@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/OpenAPI-Specification/refs/heads/main/schemas/v3.1/schema.yaml
+openapi: "3.1.0"
+servers:
+  - url: /
+info:
+  version: 1.0.0
+  title: API schema
+paths:
+  /healthz:
+    get:
+      summary: Servers health check endpoint
+      description: Returns OK if service is healthy
+      operationId: healthz
+      responses:
+        "200":
+          $ref: "#/components/responses/HealthyResp"
+        default:
+          $ref: "#/components/responses/ErrorResp"
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+    Healthy:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+
+  responses:
+    ErrorResp:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: Unexpected server error
+    HealthyResp:
+      description: Response from healthy server
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Healthy"
+          example:
+            message: OK

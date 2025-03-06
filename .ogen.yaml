@@ -1,0 +1,22 @@
+generator:
+  # `auto` (default) generates `NewError` if possible
+  # `on` tells generator to fail if spec does not meet requirements
+  # `off` disables `Convenient errors` at all
+  convenient_errors: "on"
+
+  # explicitly enable wanted features
+  features:
+    enable:
+      - "paths/server"
+      - "server/response/validation"
+      - "ogen/otel"
+      # - "ogen/unimplemented"
+      # - "debug/example_tests"
+      # - "paths/client"
+      # - "client/request/validation"
+      # - "webhooks/client"
+      # - "webhooks/server"
+      # - "client/security/reentrant"
+      # - "client/request/options"
+      # - "client/request/validation"
+    disable_all: true
