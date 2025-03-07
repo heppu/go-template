@@ -9,15 +9,23 @@ import (
 	"github.com/elisasre/go-common/v2/service/module/httpserver"
 	"github.com/elisasre/go-common/v2/service/module/httpserver/pprof"
 	"github.com/elisasre/go-common/v2/service/module/siglistener"
+	"github.com/elisasre/go-common/v2/service/module/tracerprovider"
 	"github.com/heppu/go-template/api"
 	"github.com/heppu/go-template/app"
 	"github.com/heppu/go-template/store"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
 	str := store.New(store.FromEnv())
 	service.RunAndExit(service.Modules{
 		siglistener.New(os.Interrupt),
+		tracerprovider.New(
+			tracerprovider.WithServiceName("app"),
+			tracerprovider.WithGRPCExporter(GetEnv("OTEL_URL", "127.0.0.1:4317"), insecure.NewCredentials()),
+			tracerprovider.WithSamplePercentage(100),
+			tracerprovider.WithProcessor(tracerprovider.ProcessorBatch),
+		),
 		httpserver.New(
 			pprof.WithProfiling(),
 			httpserver.WithAddr(GetEnv("PPROF_ADDR", ":8081")),
