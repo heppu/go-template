@@ -63,6 +63,16 @@ help: ## Display help
 .PHONY: all
 all: clean generate lint test bin img ## Test and build all targets
 
+.PHONY: telemetry-up
+telemetry-up:
+	docker compose -f ./telemetry/docker-compose.yaml up -d
+	@printf "\nJaeger UI available at http://localhost:16686\n"
+	@printf "Grafana UI available at http://localhost:16686\n"
+
+.PHONY: telemetry-down
+telemetry-down:
+	docker compose -f ./telemetry/docker-compose.yaml down
+
 .PHONY: clean
 clean: ## Clean up environment
 	rm -rf ./target

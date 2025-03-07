@@ -3,7 +3,6 @@ package store
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/go-tstr/tstr/strerr"
 	"github.com/jmoiron/sqlx"
@@ -13,32 +12,10 @@ import (
 
 const ErrDBNotSet = strerr.Error("db not set")
 
-type Opt func(*Store) error
-
 type Store struct {
 	opts []Opt
 	db   *sqlx.DB
 	done chan struct{}
-}
-
-func FromEnv() Opt {
-	return func(s *Store) error {
-		port := os.Getenv("POSTGRES_PORT")
-		user := os.Getenv("POSTGRES_USER")
-		host := os.Getenv("POSTGRES_HOST")
-		dbName := os.Getenv("POSTGRES_DB")
-		passwd := os.Getenv("POSTGRES_PASSWORD")
-		sslMode := os.Getenv("POSTGRES_SSLMODE")
-
-		dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", user, passwd, host, port, dbName, sslMode)
-		db, err := sqlx.Open("pgx", dsn)
-		if err != nil {
-			return fmt.Errorf("failed to open db using env variables: %w", err)
-		}
-
-		s.db = db
-		return nil
-	}
 }
 
 func New(opts ...Opt) *Store {
