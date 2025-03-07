@@ -10,7 +10,7 @@ import (
 )
 
 type Store interface {
-	Healthy() error
+	Healthy(context.Context) error
 }
 
 type App struct {
@@ -22,7 +22,7 @@ func New(s Store) *App {
 }
 
 func (a *App) Healthz(ctx context.Context) (*api.Healthy, error) {
-	if err := a.s.Healthy(); err != nil {
+	if err := a.s.Healthy(ctx); err != nil {
 		return nil, err
 	}
 	return &api.Healthy{Message: "OK"}, nil
