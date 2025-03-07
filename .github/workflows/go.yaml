@@ -82,8 +82,21 @@ jobs:
           flags: application
           files: ./target/test/application/junit/junit.xml
 
+      - name: Restore linter cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/.cache/golangci-lint
+          key: ${{ runner.os }}-lint-cache }}
+
       - name: Lint
         run: make lint
+
+      - name: Save linter cache
+        if: ${{ env.IS_MAIN }}
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.cache/golangci-lint
+          key: ${{ runner.os }}-lint-cache }}
 
       - name: Build binaries
         run: make bin
