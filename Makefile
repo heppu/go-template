@@ -1,7 +1,10 @@
 ## Requirements:
 #	- go
+#	- docker
 #	- awk
 #	- printf
+#	- cut
+#	- uniq
 
 ### Environment variables
 
@@ -27,7 +30,9 @@ BUILD_TARGETS     := $(wildcard ${CMD_DIR}/*)
 TARGET_NAMES      := $(BUILD_TARGETS:${CMD_DIR}/%=%)
 BIN_TARGETS       := ${TARGET_NAMES:%=bin/%}
 IMG_TARGETS       := ${TARGET_NAMES:%=img/%}
-
+PUSH_TARGETS      := ${TARGET_NAMES:%=.push/%}
+NOOP              :=
+SPACE             := ${NOOP} ${NOOP}
 
 ### Build variables
 TARGET            = ${@F}
@@ -36,13 +41,17 @@ TARGET_BIN        = ${TARGET_DIR}/${TARGET}
 TARGET_PKG        = ${CMD_DIR}/${TARGET}
 
 ### Override these in CI
-IMG_REPO		  ?=
-IMG_NAME		  ?= ${IMG_REPO}${TARGET}
+IMG_REG           ?=
+IMG_USER          ?=
+IMG_NAME		  ?= $(subst ${SPACE},/,$(filter-out ,$(strip ${IMG_REG} ${IMG_USER} ${TARGET})))
 IMG_TAGS          ?= dev
 
 ### Docker build variables
 IMG_TARGET_ARGS = ${IMG_TAGS:%=-t ${IMG_NAME}:%}
 IMG_BUILD_ARGS  = --build-arg TARGET=${TARGET}
+
+foo:
+	echo ${IMG_NAME}
 
 .DEFAULT_GOAL := help
 .PHONY: help
@@ -93,7 +102,7 @@ bin: ${BIN_TARGETS} ## Build all binaries
 img: ${IMG_TARGETS} ## Build all images
 
 
-## Dynamic targets
+### Dynamic targets
 #
 # Each package under ./cmd/ will have a corresponding target to build a binary and an image.
 
@@ -106,13 +115,15 @@ ${BIN_TARGETS}:
 ${IMG_TARGETS}:
 	docker buildx build -f ./Dockerfile ${IMG_BUILD_ARGS} ${IMG_TARGET_ARGS} ${TARGET_DIR}
 
+.PHONY: ${PUSH_TARGETS}
+${PUSH_TARGETS}:
+	docker push --all-tags ${IMG_NAME}
 
-## Targets meant for CI
+### Targets meant only for CI
 #
-# Required tools:
-#	- git
-#	- cut
-#	- uniq
+# These targets use .{target} notation so that they don't show up in autocomplete.
+.PHONY: .push
+.push: ${PUSH_TARGETS} ## Push all images
 
 .PHONY: .pr-check
 .pr-check: .check-duplicated-migrations .check-modified-migrations .check-generated-code

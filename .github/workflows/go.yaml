@@ -9,9 +9,22 @@ on:
   push:
     branches:
       - main
+  release:
+    types:
+      - published
+
+env:
+  IS_PR: ${{github.event_name == 'pull_request' || ''}}
+  IS_MAIN: ${{github.event_name == 'push' || ''}}
+  IS_RELEASE: ${{github.event_name == 'release' || ''}}
+  IMG_REG: ghcr.io
+  IMG_USER: ${{ github.repository_owner }}
 
 jobs:
   build:
+    permissions:
+      contents: read
+      packages: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,15 +35,15 @@ jobs:
       - name: Download dependencies
         run: go mod download
 
-      - if: ${{github.event_name == 'pull_request'}}
-        name: Verify code base on PR
+      - name: Verify code base on PR
+        if: ${{ env.IS_PR }}
         env:
           BASE_REF: ${{ github.base_ref }}
           HEAD_REF: ${{ github.head_ref }}
         run: make .pr-check
 
-      - if: ${{github.event_name == 'push'}}
-        name: Verify code base on push
+      - name: Verify code base on push
+        if: ${{ env.IS_MAIN }}
         run: make .main-check
 
       - name: Unit test
@@ -76,4 +89,17 @@ jobs:
         run: make bin
 
       - name: Build images
+        env:
+          IMG_TAGS: ${{ env.IS_PR && github.event.pull_request.head.sha }} ${{ env.IS_MAIN && github.sha }} ${{ env.IS_RELEASE && github.ref_name }} ${{ env.IS_RELEASE && 'latest' }}
         run: make img
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.IMG_REG }}
+          username: ${{ env.IMG_USER }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish images
+        if: ${{ env.IS_MAIN || env.IS_RELEASE }}
+        run: make .push
