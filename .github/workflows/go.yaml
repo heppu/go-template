@@ -86,7 +86,7 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: ~/.cache/golangci-lint
-          key: ${{ runner.os }}-lint-cache }}
+          key: ${{ runner.os }}-lint-cache
 
       - name: Lint
         run: make lint

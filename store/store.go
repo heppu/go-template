@@ -1,6 +1,7 @@
 package store
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -76,6 +77,6 @@ func (s *Store) Stop() error {
 	return s.db.Close()
 }
 
-func (s *Store) Healthy() error {
-	return s.db.Ping()
+func (s *Store) Healthy(ctx context.Context) error {
+	return s.db.PingContext(ctx)
 }

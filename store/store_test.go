@@ -1,6 +1,7 @@
 package store_test
 
 import (
+	"context"
 	"log"
 	"net"
 	"os"
@@ -34,7 +35,7 @@ func TestStore(t *testing.T) {
 		require.NoError(t, s.Init())
 		eg := &errgroup.ErrGroup{}
 		eg.Go(func() error { return s.Run() })
-		require.NoError(t, s.Healthy())
+		require.NoError(t, s.Healthy(context.Background()))
 		require.NoError(t, s.Stop())
 		require.NoError(t, eg.Wait())
 	}
