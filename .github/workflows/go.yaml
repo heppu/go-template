@@ -96,7 +96,7 @@ jobs:
         uses: actions/cache/save@v4
         with:
           path: ~/.cache/golangci-lint
-          key: ${{ runner.os }}-lint-cache }}
+          key: ${{ runner.os }}-lint-cache
 
       - name: Build binaries
         run: make bin
