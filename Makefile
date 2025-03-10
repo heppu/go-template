@@ -42,8 +42,8 @@ TARGET_PKG        = ${CMD_DIR}/${TARGET}
 
 ### Override these in CI
 IMG_REG           ?=
-IMG_USER          ?=
-IMG_NAME		  ?= $(subst ${SPACE},/,$(filter-out ,$(strip ${IMG_REG} ${IMG_USER} ${TARGET})))
+IMG_REPO          ?=
+IMG_NAME		  ?= $(subst ${SPACE},/,$(filter-out ,$(strip ${IMG_REG} ${IMG_REPO} ${TARGET})))
 IMG_TAGS          ?= dev
 
 ### Docker build variables
