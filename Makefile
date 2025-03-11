@@ -30,7 +30,6 @@ BUILD_TARGETS     := $(wildcard ${CMD_DIR}/*)
 TARGET_NAMES      := $(BUILD_TARGETS:${CMD_DIR}/%=%)
 BIN_TARGETS       := ${TARGET_NAMES:%=bin/%}
 IMG_TARGETS       := ${TARGET_NAMES:%=img/%}
-PUSH_TARGETS      := ${TARGET_NAMES:%=.push/%}
 NOOP              :=
 SPACE             := ${NOOP} ${NOOP}
 
@@ -42,8 +41,8 @@ TARGET_PKG        = ${CMD_DIR}/${TARGET}
 
 ### Override these in CI
 IMG_REG           ?=
-IMG_USER          ?=
-IMG_NAME		  ?= $(subst ${SPACE},/,$(filter-out ,$(strip ${IMG_REG} ${IMG_USER} ${TARGET})))
+IMG_REPO          ?=
+IMG_NAME		  ?= $(subst ${SPACE},/,$(filter-out ,$(strip ${IMG_REG} ${IMG_REPO} ${TARGET})))
 IMG_TAGS          ?= dev
 
 ### Docker build variables
@@ -124,54 +123,3 @@ ${BIN_TARGETS}:
 .PHONY: ${IMG_TARGETS}
 ${IMG_TARGETS}:
 	docker buildx build -f ./Dockerfile ${IMG_BUILD_ARGS} ${IMG_TARGET_ARGS} ${TARGET_DIR}
-
-.PHONY: ${PUSH_TARGETS}
-${PUSH_TARGETS}:
-	docker push --all-tags ${IMG_NAME}
-
-### Targets meant only for CI
-#
-# These targets use .{target} notation so that they don't show up in autocomplete.
-.PHONY: .push
-.push: ${PUSH_TARGETS} ## Push all images
-
-.PHONY: .pr-check
-.pr-check: .check-duplicated-migrations .check-modified-migrations .check-generated-code
-
-.PHONY: .main-check
-.main-check: .check-duplicated-migrations .check-generated-code
-
-.PHONY: .check-duplicated-migrations
-.ONESHELL:
-SHELL = /bin/bash
-.check-duplicated-migrations:
-	@echo "Performing duplicated migration check"
-	output="$$(ls -1 store/migrations/ | cut -d "_" -f1 | uniq -D)"
-	if [[ -n $$output ]]; then
-		echo "Found duplicate migration versions:"
-		echo "$$output"
-		exit 1
-	fi
-	echo "No duplicated migrations found"
-
-.PHONY: .check-modified-migrations
-.ONESHELL:
-SHELL = /bin/bash
-.check-modified-migrations:
-	@if test -z "$$BASE_REF"; then
-		echo "BASE_REF must be set"
-		exit 1
-	fi
-	if test -z "$$HEAD_REF"; then
-		echo "HEAD_REF must be set"
-		exit 1
-	fi
-	echo "Performing migration verification on PR against $$BASE_REF"
-	git fetch origin $$BASE_REF
-	git fetch origin $$HEAD_REF
-	git diff --exit-code --name-only --diff-filter=D origin/$$BASE_REF origin/$$HEAD_REF -- store/migrations/ || (echo "main branch has new migrations, please rebase" && exit 1)
-	echo "No modified migrations found"
-
-.PHONY: .check-generated-code
-.check-generated-code: generate
-	@git diff --exit-code --name-only || (printf "Running make generate modified code base.\nRun make genrate before commiting" && exit 1)

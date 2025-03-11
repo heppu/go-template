@@ -18,7 +18,7 @@ env:
   IS_MAIN: ${{github.event_name == 'push' || ''}}
   IS_RELEASE: ${{github.event_name == 'release' || ''}}
   IMG_REG: ghcr.io
-  IMG_USER: ${{ github.repository_owner }}
+  IMG_REPO: ${{ github.repository }}
 
 jobs:
   build:
@@ -40,11 +40,11 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
           HEAD_REF: ${{ github.head_ref }}
-        run: make .pr-check
+        run: make -f ci.mk pr-check
 
       - name: Verify code base on push
-        if: ${{ env.IS_MAIN }}
-        run: make .main-check
+        if: ${{ env.IS_MAIN || env.IS_RELEASE }}
+        run: make -f ci.mk main-check
 
       - name: Unit test
         run: make test/unit
@@ -107,12 +107,13 @@ jobs:
         run: make img
 
       - name: Log in to the Container registry
+        if: ${{ env.IS_MAIN || env.IS_RELEASE }}
         uses: docker/login-action@v2
         with:
           registry: ${{ env.IMG_REG }}
-          username: ${{ env.IMG_USER }}
+          username: ${{ env.IMG_REPO }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish images
         if: ${{ env.IS_MAIN || env.IS_RELEASE }}
-        run: make .push
+        run: make -f ci.mk push

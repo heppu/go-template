@@ -1,6 +1,6 @@
 //go:build applicationtest
 
-package apptest_test
+package applicationtest
 
 import (
 	"fmt"
@@ -39,7 +39,7 @@ func TestMain(m *testing.M) {
 			compose.WithOsEnv(),
 		),
 		cmd.New(
-			cmd.WithGoCode("../", "./cmd/app"),
+			cmd.WithGoCode("../", "./cmd/demo"),
 			cmd.WithReadyHTTP(appURL+"/healthz"),
 			cmd.WithEnvAppend(os.Environ()...),
 			cmd.WithGoCoverDir(os.Getenv("GOCOVERDIR")),
