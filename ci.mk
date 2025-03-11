@@ -47,4 +47,4 @@ check-modified-migrations:
 
 .PHONY: check-generated-code
 check-generated-code: generate
-	@git diff --exit-code --name-only || (printf "Running make generate modified code base.\nRun make genrate before commiting" && exit 1)
+	@git diff --exit-code --name-only || (printf "Generated code isn't up to date.\nRun make genrate before commiting" && exit 1)

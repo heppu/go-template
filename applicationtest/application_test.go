@@ -1,6 +1,6 @@
 //go:build applicationtest
 
-package apptest_test
+package applicationtest
 
 import (
 	"fmt"
