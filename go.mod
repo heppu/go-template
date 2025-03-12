@@ -12,7 +12,7 @@ require (
 	github.com/elisasre/go-common/v2 v2.2.4
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
-	github.com/go-tstr/tstr v0.0.3
+	github.com/go-tstr/tstr v0.0.4
 	github.com/golang-migrate/migrate/v4 v4.18.2
 	github.com/heppu/errgroup v1.0.0
 	github.com/jackc/pgx/v5 v5.7.2
