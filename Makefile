@@ -76,6 +76,11 @@ telemetry-down:
 clean: ## Clean up environment
 	rm -rf ./target
 
+.PHONY:download ## Download deps for all mods
+download:
+	go mod download
+	git diff --exit-code --name-status -- go.work go.work.sum
+
 .PHONY: generate
 generate: ## Run code generators
 	go generate ./...

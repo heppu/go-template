@@ -28,12 +28,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: actions/cache/restore@v4
+        with:
+          key: ${{ runner.os }}-go-cache
+          path: |
+            ~/.magefile
+            ~/.cache/golangci-lint
+            ~/.cache/go-build
+            ~/go/pkg/mod
+
       - uses: actions/setup-go@v5
         with:
-          go-version-file: go.mod
+          go-version-file: ./go.mod
+          cache: false
 
-      - name: Download dependencies
-        run: go mod download
+      - name: Download deps
+        run: make download
 
       - name: Verify code base on PR
         if: ${{ env.IS_PR }}
@@ -82,24 +93,21 @@ jobs:
           flags: application
           files: ./target/test/application/junit/junit.xml
 
-      - name: Restore linter cache
-        uses: actions/cache/restore@v4
-        with:
-          path: ~/.cache/golangci-lint
-          key: ${{ runner.os }}-lint-cache
-
       - name: Lint
         run: make lint
 
-      - name: Save linter cache
-        if: ${{ env.IS_MAIN }}
-        uses: actions/cache/save@v4
-        with:
-          path: ~/.cache/golangci-lint
-          key: ${{ runner.os }}-lint-cache
-
       - name: Build binaries
         run: make bin
+
+      - uses: actions/cache/save@v4
+        if: ${{ env.IS_MAIN }}
+        with:
+          key: ${{ runner.os }}-go-cache
+          path: |
+            ~/.magefile
+            ~/.cache/golangci-lint
+            ~/.cache/go-build
+            ~/go/pkg/mod
 
       - name: Build images
         env:
