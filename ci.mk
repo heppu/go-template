@@ -10,10 +10,10 @@ ${PUSH_TARGETS}:
 push: ${PUSH_TARGETS}
 
 .PHONY: pr-check
-pr-check: check-duplicated-migrations check-modified-migrations check-generated-code
+pr-check: main-check check-modified-migrations
 
-.PHONY: .main-check
-.main-check: check-duplicated-migrations check-generated-code
+.PHONY: main-check
+main-check: tidy-check check-duplicated-migrations check-generated-code
 
 .PHONY: check-duplicated-migrations
 .ONESHELL:
@@ -48,3 +48,8 @@ check-modified-migrations:
 .PHONY: check-generated-code
 check-generated-code: generate
 	@git diff --exit-code --name-only || (printf "Generated code isn't up to date.\nRun make genrate before commiting" && exit 1)
+
+.PHONY: tidy-check
+tidy-check:
+	go mod tidy
+	git diff --exit-code --name-status -- go.mod go.sum
