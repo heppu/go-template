@@ -44,6 +44,8 @@ IMG_TAGS          ?= dev
 IMG_TARGET_ARGS = ${IMG_TAGS:%=-t ${IMG_NAME}:%}
 IMG_BUILD_ARGS  = --build-arg TARGET=${TARGET}
 
+### OpenTelemetry variables
+OTEL_ENV_VARS := OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:4318" OTEL_EXPORTER_OTLP_PROTO=http OTEL_EXPORTER_OTLP_INSECURE=true OTEL_SERVICE_NAME=${TARGET}
 
 .DEFAULT_GOAL := help
 .PHONY: help
@@ -53,31 +55,18 @@ help: ## Display help
 .PHONY: all
 all: clean .WAIT generate .WAIT lint test bin .WAIT img ## Test and build all targets
 
-.PHONY: telemetry-up
-telemetry-up:
-	docker compose -f ./telemetry/docker-compose.yaml up -d
-	@printf "\nJaeger UI available at http://localhost:16686\n"
+.PHONY: bin
+bin: ## Build binary
+	mkdir -p ${TARGET_DIR}
+	go build -o  ${TARGET_BIN} ${TARGET_PKG}
 
-.PHONY: telemetry-down
-telemetry-down:
-	docker compose -f ./telemetry/docker-compose.yaml down
+.PHONY: img
+img: ## Build image
+	docker buildx build -f ./Dockerfile ${IMG_BUILD_ARGS} ${IMG_TARGET_ARGS} ${TARGET_DIR}
 
-.PHONY: clean
-clean: ## Clean up environment
-	rm -rf ./target
-
-.PHONY:download ## Download deps for all mods
-download:
-	go mod download
-	git diff --exit-code --name-status -- go.work go.work.sum
-
-.PHONY: generate
-generate: ## Run code generators
-	go generate ./...
-
-.PHONY: lint
-lint: ## Run linter
-	go tool github.com/golangci/golangci-lint/cmd/golangci-lint run ./...
+.PHONY: run
+run: telemetry-up db-up ## Run application
+	${OTEL_ENV_VARS} go run ${TARGET_PKG}
 
 .PHONY: test
 test: test/unit test/app ## Run all tests
@@ -101,16 +90,39 @@ test/app: ## Run application tests
 
 .PHONY: test/app-otel
 test/app-otel: telemetry-up ## Run application tests with OpenTelemetry
-	OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:4318" \
-	OTEL_EXPORTER_OTLP_PROTO=http \
-	OTEL_EXPORTER_OTLP_INSECURE=true \
-	$(MAKE) test/app
+	${OTEL_ENV_VARS} $(MAKE) test/app
 
-.PHONY: bin
-bin: ## Build binary
-	mkdir -p ${TARGET_DIR}
-	go build -o  ${TARGET_BIN} ${TARGET_PKG}
+.PHONY: lint
+lint: ## Run linter
+	go tool github.com/golangci/golangci-lint/cmd/golangci-lint run ./...
 
-.PHONY: img
-img: ## Build image
-	docker buildx build -f ./Dockerfile ${IMG_BUILD_ARGS} ${IMG_TARGET_ARGS} ${TARGET_DIR}
+.PHONY: telemetry-up
+telemetry-up: ## Start telemetry stack
+	docker compose -f ./telemetry/docker-compose.yaml up -d
+	@printf "\nJaeger UI available at http://localhost:16686\n"
+
+.PHONY: telemetry-down
+telemetry-down: ## Stop telemetry stack
+	docker compose -f ./telemetry/docker-compose.yaml down
+
+.PHONY: db-up
+db-up: ## Start db
+	docker compose up -d
+	@printf "\nJaeger UI available at http://localhost:16686\n"
+
+.PHONY: db-down
+db-down: ## Stop db
+	docker compose down
+
+.PHONY:download ## Download deps for all mods
+download:
+	go mod download
+	git diff --exit-code --name-status -- go.work go.work.sum
+
+.PHONY: generate
+generate: ## Run code generators
+	go generate ./...
+
+.PHONY: clean
+clean: ## Clean up environment
+	rm -rf ./target
