@@ -3,6 +3,13 @@ package main
 import (
 	"os"
 
+	// Timezone data for scratch image
+	_ "time/tzdata"
+
+	// Automated resource configuration for container envs
+	_ "github.com/KimMachineGun/automemlimit"
+	_ "go.uber.org/automaxprocs"
+
 	"github.com/go-srvc/mods/httpmod"
 	"github.com/go-srvc/mods/logmod"
 	"github.com/go-srvc/mods/metermod"

@@ -49,8 +49,6 @@ IMG_TAGS          ?= dev
 IMG_TARGET_ARGS = ${IMG_TAGS:%=-t ${IMG_NAME}:%}
 IMG_BUILD_ARGS  = --build-arg TARGET=${TARGET}
 
-foo:
-	echo ${IMG_NAME}
 
 .DEFAULT_GOAL := help
 .PHONY: help
@@ -60,7 +58,7 @@ help: ## Display help
 	@for target in ${IMG_TARGETS}; do printf "  \033[36m%-22s\033[0m %s\n" $${target} "Build image for $${target}"; done
 
 .PHONY: all
-all: clean generate lint test bin img ## Test and build all targets
+all: clean .WAIT generate .WAIT lint test bin .WAIT img ## Test and build all targets
 
 .PHONY: telemetry-up
 telemetry-up:

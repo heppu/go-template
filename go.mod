@@ -9,15 +9,16 @@ tool (
 )
 
 require (
+	github.com/KimMachineGun/automemlimit v0.7.1
 	github.com/XSAM/otelsql v0.37.0
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
-	github.com/go-srvc/mods/httpmod v0.1.5
-	github.com/go-srvc/mods/logmod v0.1.5
-	github.com/go-srvc/mods/metermod v0.1.5
-	github.com/go-srvc/mods/sigmod v0.1.5
-	github.com/go-srvc/mods/sqlxmod v0.1.5
-	github.com/go-srvc/mods/tracemod v0.1.5
+	github.com/go-srvc/mods/httpmod v0.2.0
+	github.com/go-srvc/mods/logmod v0.2.0
+	github.com/go-srvc/mods/metermod v0.2.0
+	github.com/go-srvc/mods/sigmod v0.2.0
+	github.com/go-srvc/mods/sqlxmod v0.2.0
+	github.com/go-srvc/mods/tracemod v0.2.0
 	github.com/go-srvc/srvc v0.1.0
 	github.com/go-tstr/tstr v0.0.5
 	github.com/golang-migrate/migrate/v4 v4.18.2
@@ -28,6 +29,7 @@ require (
 	go.opentelemetry.io/otel v1.35.0
 	go.opentelemetry.io/otel/metric v1.35.0
 	go.opentelemetry.io/otel/trace v1.35.0
+	go.uber.org/automaxprocs v1.6.0
 )
 
 require (
@@ -253,6 +255,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/opencontainers/go-digest v1.0.0 // indirect
 	github.com/opencontainers/image-spec v1.1.0 // indirect
+	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.2.3 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
@@ -338,7 +341,6 @@ require (
 	go-simpler.org/musttag v0.13.0 // indirect
 	go-simpler.org/sloglint v0.9.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
-	go.opentelemetry.io/contrib/bridges/otelslog v0.10.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.59.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace v0.53.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.59.0 // indirect
@@ -359,7 +361,6 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.35.0 // indirect
 	go.opentelemetry.io/proto/otlp v1.5.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
-	go.uber.org/automaxprocs v1.6.0 // indirect
 	go.uber.org/mock v0.5.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
