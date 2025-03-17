@@ -21,7 +21,7 @@ The template is structured to provide a solid foundation while allowing easy cus
 - `./api/` - rest api layer generated from `openapi.yaml`
 - `./app/` - business logic that maps to rest endpoints inside api
 - `./applicationtest/` - application/integration tests (tests executed against application binary)
-- `./cmd/*/` - entry points for applications/binaries, each subdirectory becomes a separate executable
+- `./cmd/demo/` - main package for application, automatically renamed based on repo name
 - `./server/` - configures http.Server with api handler
 - `./store/` - database layer with migration support
 - `./store/migrations/` - database schema migration files

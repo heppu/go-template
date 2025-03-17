@@ -76,7 +76,7 @@ jobs:
           files: ./target/test/unit/junit/junit.xml
 
       - name: Application test
-        run: make test/application
+        run: make test/app
 
       - name: Upload application test
         uses: codecov/codecov-action@v5
@@ -96,7 +96,7 @@ jobs:
       - name: Lint
         run: make lint
 
-      - name: Build binaries
+      - name: Build binary
         run: make bin
 
       - uses: actions/cache/save@v4
@@ -109,7 +109,7 @@ jobs:
             ~/.cache/go-build
             ~/go/pkg/mod
 
-      - name: Build images
+      - name: Build image
         env:
           IMG_TAGS: ${{ env.IS_PR && github.event.pull_request.head.sha }} ${{ env.IS_MAIN && github.sha }} ${{ env.IS_RELEASE && github.ref_name }} ${{ env.IS_RELEASE && 'latest' }}
         run: make img
@@ -122,6 +122,6 @@ jobs:
           username: ${{ env.IMG_REPO }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish images
+      - name: Publish image
         if: ${{ env.IS_MAIN || env.IS_RELEASE }}
         run: make -f ci.mk push

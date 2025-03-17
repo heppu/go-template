@@ -1,13 +1,8 @@
 include Makefile
 
-PUSH_TARGETS := ${TARGET_NAMES:%=push/%}
-
-.PHONY: ${PUSH_TARGETS}
-${PUSH_TARGETS}:
-	docker push --all-tags ${IMG_NAME}
-
 .PHONY: .push
-push: ${PUSH_TARGETS}
+push:
+	docker push --all-tags ${IMG_NAME}
 
 .PHONY: pr-check
 pr-check: main-check check-modified-migrations
