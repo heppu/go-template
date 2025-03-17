@@ -6,20 +6,47 @@ A comprehensive, production-ready Go project template enforcing best practices. 
 
 ## Getting started
 
-Fork this repo and create your project repo using the fork as a template. Clone the new repo and run `make -f rename.mk`. After that everyhting should be renamed based on your repository's name. To verify that renaming was successfull run `make all`. Create a PR with these changes and see how the github workflow gets triggered.
+1. Fork this repo
+2. Create project repo using the fork as a template
+3. Clone the project repo and run `make -f rename.mk`
+4. Run `make all` to verify that everything works
+5. Create a PR see how the github workflow gets triggered
+
+## Project layout
+
+The template is structured to provide a solid foundation while allowing easy customization for your specific project needs.
+
+### Go files
+
+- `./api/` - rest api layer generated from `openapi.yaml`
+- `./app/` - business logic that maps to rest endpoints inside api
+- `./applicationtest/` - application/integration tests (tests executed against application binary)
+- `./cmd/*/` - entry points for applications/binaries, each subdirectory becomes a separate executable
+- `./server/` - configures http.Server with api handler
+- `./store/` - database layer with migration support
+- `./store/migrations/` - database schema migration files
+
+### Non Go files
+
+- `./.github/` - configuration files for github actions
+- `./.golanci.yaml` - configuration golangci-linter
+- `./.ogen.yaml` - configuration ogen api generator
+- `./openapi.yaml` - api specification
+- `./docker-compose.yaml` - configuration for services used in test
+- `./Dockerfile` - image definition for Go binaries
+- `./Makefile` - build tooling configuration
+- `./ci.mk` - build tooling configuration for CI only targets
+- `./rename.mk` - script to run rename after cloning initial template
+- `./telemetry/` - configuration for otel related tools
+- `./target/` - container for build and test artifacts
 
 ## Tooling
 
-This template includes configuration for the following tools:
-
-- **Go 1.24+**
+- **Make** - Build automation
 - **Docker** - For containerization and local testing
 - **Docker Compose** - For local testing
-- **Make** - Build automation
 - **golangci-lint** - Code quality and style enforcement
-- **OpenTelemetry** - Distributed tracing and metrics
-  - Jaeger UI: http://localhost:16686
-  - Prometheus: http://localhost:9090
+- **gotestsum** - Test output formatter
 - **GitHub Actions** - CI workflows
 - **Codecov** - Code coverage
 
@@ -27,10 +54,10 @@ This template includes configuration for the following tools:
 
 Key libraries included and pre-configured:
 
+- **go-srvc/srvc** - Service library for life cycle management
+- **go-srvc/mods** - Ready made modules for srvc
 - **ogen** - OpenAPI code generation with observability support
 - **golang-migrate** - Database migration management
 - **sqlx** - Mapping data between structs and SQL
-- **testcontainers-go** - Integration testing with real services
+- **go-tstr/tstr** - Testing library with application test support
 - **stretchr/testify** - Test assertions
-
-The template is structured to provide a solid foundation while allowing easy customization for your specific project needs.
