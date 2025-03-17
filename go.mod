@@ -13,12 +13,12 @@ require (
 	github.com/XSAM/otelsql v0.37.0
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
-	github.com/go-srvc/mods/httpmod v0.1.5
-	github.com/go-srvc/mods/logmod v0.1.5
-	github.com/go-srvc/mods/metermod v0.1.5
-	github.com/go-srvc/mods/sigmod v0.1.5
-	github.com/go-srvc/mods/sqlxmod v0.1.5
-	github.com/go-srvc/mods/tracemod v0.1.5
+	github.com/go-srvc/mods/httpmod v0.2.0
+	github.com/go-srvc/mods/logmod v0.2.0
+	github.com/go-srvc/mods/metermod v0.2.0
+	github.com/go-srvc/mods/sigmod v0.2.0
+	github.com/go-srvc/mods/sqlxmod v0.2.0
+	github.com/go-srvc/mods/tracemod v0.2.0
 	github.com/go-srvc/srvc v0.1.0
 	github.com/go-tstr/tstr v0.0.5
 	github.com/golang-migrate/migrate/v4 v4.18.2
@@ -341,7 +341,6 @@ require (
 	go-simpler.org/musttag v0.13.0 // indirect
 	go-simpler.org/sloglint v0.9.0 // indirect
 	go.opentelemetry.io/auto/sdk v1.1.0 // indirect
-	go.opentelemetry.io/contrib/bridges/otelslog v0.10.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.59.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/httptrace/otelhttptrace v0.53.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.59.0 // indirect
