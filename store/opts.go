@@ -1,6 +1,7 @@
 package store
 
 import (
+	"cmp"
 	"embed"
 	"errors"
 	"fmt"
@@ -27,12 +28,12 @@ func WithDefaults() []sqlxmod.Opt {
 
 func WithOtel() sqlxmod.Opt {
 	return func(db *sqlxmod.DB) error {
-		port := os.Getenv("POSTGRES_PORT")
-		user := os.Getenv("POSTGRES_USER")
-		host := os.Getenv("POSTGRES_HOST")
-		dbName := os.Getenv("POSTGRES_DB")
-		passwd := os.Getenv("POSTGRES_PASSWORD")
-		sslMode := os.Getenv("POSTGRES_SSLMODE")
+		port := get("POSTGRES_PORT", "5432")
+		user := get("POSTGRES_USER", "root")
+		host := get("POSTGRES_HOST", "127.0.0.1")
+		dbName := get("POSTGRES_DB", "root")
+		passwd := get("POSTGRES_PASSWORD", "root")
+		sslMode := get("POSTGRES_SSLMODE", "disable")
 		dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", user, passwd, host, port, dbName, sslMode)
 		return sqlxmod.WithOtel("pgx", dsn, otelsql.WithAttributes(semconv.DBSystemNamePostgreSQL))(db)
 	}
@@ -76,4 +77,8 @@ func dbInfo(version uint, dirty bool, err error) {
 		l = l.With(slog.String("error", err.Error()))
 	}
 	l.Info("DB info")
+}
+
+func get(key, defVal string) string {
+	return cmp.Or(os.Getenv(key), defVal)
 }
