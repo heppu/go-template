@@ -40,24 +40,28 @@ The template is structured to provide a solid foundation while allowing easy cus
 - `./telemetry/` - configuration for otel related tools
 - `./target/` - container for build and test artifacts
 
-## Tooling
+## Tools from OS
 
-- **Make** - Build automation
-- **Docker** - For containerization and local testing
-- **Docker Compose** - For local testing
-- **golangci-lint** - Code quality and style enforcement
-- **gotestsum** - Test output formatter
-- **GitHub Actions** - CI workflows
-- **Codecov** - Code coverage
+- [Make](https://www.gnu.org/software/make/) - Build automation
+- [Docker](https://docs.docker.com/engine/install/) - For containerization and local testing
+- [Docker Compose](https://docs.docker.com/compose/install/) - For local testing
+
+## Tools from Go (using [go tool](https://go.dev/doc/modules/managing-dependencies#tools))
+
+- [golangci-lint](https://golangci-lint.run/) - Code quality and style enforcement
+- [gotestsum](https://github.com/gotestyourself/gotestsum) - Test output formatter
+- [ogen](https://ogen.dev/docs/intro) - OpenAPI code generation with observability and validation
+
+## CI
+
+- [GitHub Actions](https://docs.github.com/en/actions) - CI workflows
+- [Codecov](https://app.codecov.io/github/heppu/go-template) - Code coverage
 
 ## Libraries
 
-Key libraries included and pre-configured:
-
-- **go-srvc/srvc** - Service library for life cycle management
-- **go-srvc/mods** - Ready made modules for srvc
-- **ogen** - OpenAPI code generation with observability support
-- **golang-migrate** - Database migration management
-- **sqlx** - Mapping data between structs and SQL
-- **go-tstr/tstr** - Testing library with application test support
-- **stretchr/testify** - Test assertions
+- [go-srvc/srvc](https://github.com/go-srvc/srvc) - Service library for life cycle management
+- [go-srvc/mods](https://github.com/go-srvc/mods) - Ready made modules for srvc
+- [golang-migrate](https://github.com/go-tstr/tstr/) - Database migration management
+- [jmoiron/sqlx](https://github.com/jmoiron/sqlx) - Mapping data between structs and SQL
+- [go-tstr/tstr](https://github.com/go-tstr/tstr) - Testing library with application test support
+- [stretchr/testify](https://github.com/stretchr/testify) - Test assertions
