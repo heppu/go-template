@@ -31,7 +31,7 @@ func TestMain(m *testing.M) {
 
 func TestStore(t *testing.T) {
 	fn := func(t *testing.T) {
-		s := store.New(store.FromEnv())
+		s := store.New(store.WithDefaults()...)
 		require.NoError(t, s.Init())
 		eg := &errgroup.ErrGroup{}
 		eg.Go(func() error { return s.Run() })
@@ -42,11 +42,6 @@ func TestStore(t *testing.T) {
 
 	t.Run("Start on empty DB", fn)
 	t.Run("Start on already initialized DB", fn)
-}
-
-func TestNew_ErrDBNotSet(t *testing.T) {
-	s := store.New()
-	require.ErrorIs(t, s.Init(), store.ErrDBNotSet)
 }
 
 func mustFreePort() int {

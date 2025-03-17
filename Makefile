@@ -109,6 +109,13 @@ test/application: ## Run application tests
 	GOCOVERDIR=$(abspath ${APP_BIN_DIR}) go tool gotestsum --junitfile=${APP_JUNIT_DIR}/junit.xml -- -tags=applicationtest -count=1 ./applicationtest/...
 	go tool covdata textfmt -i=${APP_BIN_DIR} -o ${APP_TXT_COV_DIR}/cover.txt
 
+.PHONY: test/application-with-telemetry
+test/application-with-telemetry: telemetry-up ## Run application tests with telemetry
+	OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:4318" \
+	OTEL_EXPORTER_OTLP_PROTO=http \
+	OTEL_EXPORTER_OTLP_INSECURE=true \
+	$(MAKE) test/application
+
 .PHONY: bin
 bin: ${BIN_TARGETS} ## Build all binaries
 

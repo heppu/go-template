@@ -1,17 +1,12 @@
 receivers:
-  # Make sure to add the otlp receiver.
-  # This will open up the receiver on port 4317
   otlp:
     protocols:
       grpc:
-        endpoint: "0.0.0.0:4317"
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
 processors:
   batch:
-  # https://github.com/open-telemetry/opentelemetry-collector/tree/main/processor/memorylimiterprocessor
-  memory_limiter:
-    # 75% of total memory
-    limit_percentage: 75
-    check_interval: 1s
 extensions:
   health_check: {}
 exporters:
@@ -29,10 +24,13 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [memory_limiter, batch]
+      processors: [batch]
       exporters: [otlp]
-
     metrics:
       receivers: [otlp]
-      processors: [memory_limiter, batch]
+      processors: [batch]
       exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [otlp]

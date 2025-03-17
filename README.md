@@ -1,3 +1,5 @@
+[![Go Reference](https://pkg.go.dev/badge/github.com/heppu/go-template.svg)](https://pkg.go.dev/github.com/heppu/go-template) [![codecov](https://codecov.io/github/heppu/go-template/graph/badge.svg?token=H3u7Ui9PfC)](https://codecov.io/github/heppu/go-template) ![main](https://github.com/heppu/go-template/actions/workflows/go.yaml/badge.svg?branch=main)
+
 # Go project template
 
 A comprehensive, production-ready Go project template enforcing best practices. This template provides a solid foundation for building scalable, observable, and maintainable Go services.

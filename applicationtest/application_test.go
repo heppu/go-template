@@ -32,6 +32,8 @@ func TestMain(m *testing.M) {
 	os.Setenv("POSTGRES_DB", "test")
 	os.Setenv("POSTGRES_SSLMODE", "disable")
 	os.Setenv("POSTGRES_HOST", "127.0.0.1")
+	os.Setenv("OTEL_RESOURCE_ATTRIBUTES", "service.version=0.1.0")
+	os.Setenv("OTEL_SERVICE_NAME", "app")
 
 	tstr.RunMain(m, tstr.WithDeps(
 		compose.New(
