@@ -1,32 +1,79 @@
 package store
 
 import (
+	"embed"
+	"errors"
 	"fmt"
+	"log/slog"
 	"os"
 
-	"github.com/uptrace/opentelemetry-go-extra/otelsql"
-	"github.com/uptrace/opentelemetry-go-extra/otelsqlx"
-	semconv "go.opentelemetry.io/otel/semconv/v1.24.0"
+	"github.com/XSAM/otelsql"
+	"github.com/go-srvc/mods/sqlxmod"
+	"github.com/golang-migrate/migrate/v4"
+	"github.com/golang-migrate/migrate/v4/database/postgres"
+	"github.com/golang-migrate/migrate/v4/source/iofs"
+	semconv "go.opentelemetry.io/otel/semconv/v1.30.0"
 )
 
-type Opt func(*Store) error
+//go:embed migrations/*.sql
+var fs embed.FS
 
-func FromEnv() Opt {
-	return func(s *Store) error {
+func WithDefaults() []sqlxmod.Opt {
+	return []sqlxmod.Opt{
+		WithOtel(),
+		WithMigrations(),
+	}
+}
+
+func WithOtel() sqlxmod.Opt {
+	return func(db *sqlxmod.DB) error {
 		port := os.Getenv("POSTGRES_PORT")
 		user := os.Getenv("POSTGRES_USER")
 		host := os.Getenv("POSTGRES_HOST")
 		dbName := os.Getenv("POSTGRES_DB")
 		passwd := os.Getenv("POSTGRES_PASSWORD")
 		sslMode := os.Getenv("POSTGRES_SSLMODE")
-
 		dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s", user, passwd, host, port, dbName, sslMode)
-		db, err := otelsqlx.Open("pgx", dsn, otelsql.WithAttributes(semconv.DBSystemPostgreSQL))
+		return sqlxmod.WithOtel("pgx", dsn, otelsql.WithAttributes(semconv.DBSystemNamePostgreSQL))(db)
+	}
+}
+
+func WithMigrations() sqlxmod.Opt {
+	return func(db *sqlxmod.DB) error {
+		source, err := iofs.New(fs, "migrations")
 		if err != nil {
-			return fmt.Errorf("failed to open db using env variables: %w", err)
+			return fmt.Errorf("failed to create migration fs from embedded fs: %w", err)
+		}
+		driver, err := postgres.WithInstance(db.DB().DB, &postgres.Config{})
+		if err != nil {
+			return err
 		}
 
-		s.db = db
+		m, err := migrate.NewWithInstance("iofs", source, "postgres", driver)
+		if err != nil {
+			return err
+		}
+
+		dbInfo(m.Version())
+		err = m.Up()
+		if errors.Is(err, migrate.ErrNoChange) {
+			slog.Info("already at latest migration")
+			return nil
+		}
+
+		dbInfo(m.Version())
+		if err != nil && !errors.Is(err, os.ErrNotExist) {
+			return err
+		}
 		return nil
 	}
+}
+
+func dbInfo(version uint, dirty bool, err error) {
+	l := slog.With(slog.Uint64("current_version", uint64(version)))
+	l = l.With(slog.Bool("dirty", dirty))
+	if err != nil {
+		l = l.With(slog.String("error", err.Error()))
+	}
+	l.Info("DB info")
 }
