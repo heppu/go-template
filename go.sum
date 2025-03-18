@@ -311,8 +311,8 @@ github.com/go-srvc/mods/sqlxmod v0.2.2 h1:ZaZhTn6slWzvCfph0KIeJxeAi7t/oSRMaL6K0s
 github.com/go-srvc/mods/sqlxmod v0.2.2/go.mod h1:XC8+iPZN2dWHmEyZtY1rSIxk6xdEbmB4V9i8DkU+sJI=
 github.com/go-srvc/mods/tracemod v0.2.2 h1:0Lf9GcezC1/HVVh5/Prg+YjiUN2i9ZXrgFX4oe6hATw=
 github.com/go-srvc/mods/tracemod v0.2.2/go.mod h1:W9pNUMyhMpGnmSSwZzUuy3rNbHvqRerDYix2HjnRijo=
-github.com/go-srvc/srvc v0.1.1 h1:ytG/8efSfGd8BTJQ9Gg+E4JfT1mS4WgkFykshrWUth4=
-github.com/go-srvc/srvc v0.1.1/go.mod h1:vK0Ia3/xK1F3PqAZEGQt1PVnkmYF7gesE/aBIi8RQ9c=
+github.com/go-srvc/srvc v0.2.0 h1:C80gKI9p2gE6jW/LNqU6tyNCtUK5u4U36/sGJi7mDxo=
+github.com/go-srvc/srvc v0.2.0/go.mod h1:vK0Ia3/xK1F3PqAZEGQt1PVnkmYF7gesE/aBIi8RQ9c=
 github.com/go-stack/stack v1.8.0/go.mod h1:v0f6uXyyMGvRgIKkXu+yp6POWl0qKG85gN/melR3HDY=
 github.com/go-task/slim-sprig/v3 v3.0.0 h1:sUs3vkvUymDpBKi3qH1YSqBQk9+9D/8M2mN1vB6EwHI=
 github.com/go-task/slim-sprig/v3 v3.0.0/go.mod h1:W848ghGpv3Qj3dhTPRyJypKRiqCdHZiAzKg9hl15HA8=
