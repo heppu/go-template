@@ -1,10 +1,13 @@
 ## Requirements:
 #	- go
-#	- docker
 #	- awk
+#	- sed
 #	- printf
 #	- cut
 #	- uniq
+#	- curl
+#	- docker
+#	- docker-compose
 
 ### Environment variables
 
