@@ -72,7 +72,7 @@ func WithMigrations() sqlxmod.Opt {
 
 func setDB(s *Store) sqlxmod.Opt {
 	return func(db *sqlxmod.DB) error {
-		s.db = db.DB()
+		s.db = NamedDB{db.DB()}
 		return nil
 	}
 }
