@@ -129,6 +129,7 @@ db-down: ## Stop db
 generate: ## Run code generators
 	go generate ./...
 
+.PHONY: update-swagger-ui
 update-swagger-ui: ## Update Swagger UI
 	rm -rf ${SWAGGER_UI_DIR}
 	mkdir -p ${SWAGGER_UI_DIR}
