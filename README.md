@@ -42,9 +42,10 @@ The template is structured to provide a solid foundation while allowing easy cus
 
 ### Non Go files
 
-- `./.github/` - configuration files for github actions
-- `./.golanci.yaml` - configuration golangci-linter
-- `./.ogen.yaml` - configuration ogen api generator
+- `./.github/` - github actions workflow files
+- `./.golanci.yaml` - golangci-linter configuration
+- `./.ogen.yaml` - ogen generator configuration
+- `./codecov.yml` - codecov configuration
 - `./server/openapi.yaml` - api specification
 - `./server/swaggerui` - swagger ui files
 - `./docker-compose.yaml` - configuration for services used in test
