@@ -6,11 +6,25 @@ A comprehensive, production-ready Go project template enforcing best practices. 
 
 ## Getting started
 
+### Creating new project
+
 1. Fork this repo
 2. Create project repo using the fork as a template
 3. Clone the project repo and run `make -f rename.mk`
 4. Run `make all` to verify that everything works
 5. Create a PR see how the github workflow gets triggered
+
+### Adding endpoints
+
+1. Add paths and components in [server/openapi.yaml](server/openapi.yaml)
+2. Run `make generate`
+3. Implement missing methods in [app/app.go]
+
+### Adding tables
+
+1. Add new migration file `{NUM}_{NAME}.up.sql` eg `002_add_users_table.up.sql` under [store/migrations](store/migrations)
+2. Write `CREATE TABLE` statement in that file
+3. Now your migration is automatically applied when application starts
 
 ## Project layout
 
@@ -18,7 +32,7 @@ The template is structured to provide a solid foundation while allowing easy cus
 
 ### Go files
 
-- `./api/` - rest api layer generated from `openapi.yaml`
+- `./api/` - rest api layer generated from [openapi.yaml](server/openapi.yaml)
 - `./app/` - business logic that maps to rest endpoints inside api
 - `./applicationtest/` - application/integration tests (tests executed against application binary)
 - `./cmd/demo/` - main package for application, automatically renamed based on repo name
