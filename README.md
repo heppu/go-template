@@ -45,7 +45,7 @@ The template is structured to provide a solid foundation while allowing easy cus
 - `./.github/` - github actions workflow files
 - `./.golanci.yaml` - golangci-linter configuration
 - `./.ogen.yaml` - ogen generator configuration
-- `./codecov.yml` - codecov configuration
+- `./.codecov.yml` - codecov configuration
 - `./server/openapi.yaml` - api specification
 - `./server/swaggerui` - swagger ui files
 - `./docker-compose.yaml` - configuration for services used in test
