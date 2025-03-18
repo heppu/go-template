@@ -9,7 +9,8 @@ paths:
   /healthz:
     get:
       summary: Servers health check endpoint
-      description: Returns OK if service is healthy
+      tags:
+        - health
       operationId: healthz
       responses:
         "200":

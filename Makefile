@@ -54,11 +54,11 @@ SWAGGER_NEW_URL    := /docs/openapi.yaml
 
 .DEFAULT_GOAL := help
 .PHONY: help
-help: ## Display help
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nStatic targets:\n"} /^[a-zA-Z0-9_\/-]+:.*?##/ { printf "  \033[36m%-20s\033[0m  %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+help: ## Show help
+	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z0-9_\/-]+:.*?##/ { printf "  \033[36m%-20s\033[0m  %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 .PHONY: all
-all: clean .WAIT generate .WAIT lint test bin .WAIT img ## Test and build all targets
+all: clean .WAIT generate .WAIT lint test bin .WAIT img ## Test, lint and build project
 
 .PHONY: bin
 bin: ## Build binary
@@ -78,7 +78,7 @@ run: telemetry-up db-up ## Run application
 	go run ${TARGET_PKG}
 
 .PHONY: test
-test: test/unit test/app ## Run all tests
+test: test/unit test/app ## Run all tests and show coverage
 	rm -rf ${CMB_TXT_COV_DIR}
 	mkdir -p ${CMB_TXT_COV_DIR}
 	go tool covdata textfmt -i=${APP_BIN_DIR},${UNIT_BIN_COV_DIR} -o ${CMB_TXT_COV_DIR}/cover.txt
