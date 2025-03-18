@@ -31,7 +31,8 @@ jobs:
 
       - uses: actions/cache/restore@v4
         with:
-          key: ${{ runner.os }}-go-cache
+          key: ${{ runner.os }}-go-cache-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
           path: |
             ~/.cache/golangci-lint
             ~/.cache/go-build
@@ -98,7 +99,7 @@ jobs:
       - uses: actions/cache/save@v4
         if: ${{ env.IS_MAIN }}
         with:
-          key: ${{ runner.os }}-go-cache
+          key: ${{ runner.os }}-go-cache-${{ hashFiles('**/go.sum') }}
           path: |
             ~/.cache/golangci-lint
             ~/.cache/go-build
