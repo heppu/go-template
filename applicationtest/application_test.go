@@ -42,7 +42,7 @@ func TestMain(m *testing.M) {
 		),
 		cmd.New(
 			cmd.WithGoCode("../", "./cmd/demo"),
-			cmd.WithReadyHTTP(appURL+"/healthz"),
+			cmd.WithReadyHTTP(appURL+"/api/v1/healthz"),
 			cmd.WithEnvAppend(os.Environ()...),
 			cmd.WithGoCoverDir(os.Getenv("GOCOVERDIR")),
 			cmd.WithEnvAppend(fmt.Sprintf("API_ADDR=:%d", apiPort)),
@@ -51,7 +51,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestHealthy(t *testing.T) {
-	resp, err := http.Get(appURL + "/healthz")
+	resp, err := http.Get(appURL + "/api/v1/healthz")
 	require.NoError(t, err)
 	assert.Equal(t, http.StatusOK, resp.StatusCode)
 	data, err := io.ReadAll(resp.Body)
