@@ -13,12 +13,12 @@ require (
 	github.com/XSAM/otelsql v0.37.0
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
-	github.com/go-srvc/mods/httpmod v0.2.2
-	github.com/go-srvc/mods/logmod v0.2.2
-	github.com/go-srvc/mods/metermod v0.2.2
-	github.com/go-srvc/mods/sigmod v0.2.2
-	github.com/go-srvc/mods/sqlxmod v0.2.2
-	github.com/go-srvc/mods/tracemod v0.2.2
+	github.com/go-srvc/mods/httpmod v0.2.3
+	github.com/go-srvc/mods/logmod v0.2.3
+	github.com/go-srvc/mods/metermod v0.2.3
+	github.com/go-srvc/mods/sigmod v0.2.3
+	github.com/go-srvc/mods/sqlxmod v0.2.3
+	github.com/go-srvc/mods/tracemod v0.2.3
 	github.com/go-srvc/srvc v0.2.0
 	github.com/go-tstr/tstr v0.1.1
 	github.com/golang-migrate/migrate/v4 v4.18.2
