@@ -123,11 +123,6 @@ db-up: ## Start db
 db-down: ## Stop db
 	docker compose down
 
-.PHONY:download ## Download deps for all mods
-download:
-	go mod download
-	git diff --exit-code --name-status -- go.work go.work.sum
-
 .PHONY: generate
 generate: ## Run code generators
 	go generate ./...

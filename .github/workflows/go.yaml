@@ -43,9 +43,6 @@ jobs:
           go-version-file: ./go.mod
           cache: false
 
-      - name: Download deps
-        run: make download
-
       - name: Verify code base on PR
         if: ${{ env.IS_PR }}
         env:
