@@ -2,7 +2,7 @@
 
 # Go project template
 
-A comprehensive, production-ready Go project template enforcing best practices. This template provides a solid foundation for building scalable, observable, and maintainable Go services.
+This template provides a solid foundation for building scalable, observable, and maintainable Go services.
 
 ## Getting started
 
@@ -55,7 +55,9 @@ The template is structured to provide a solid foundation while allowing easy cus
 - `./telemetry/` - configuration for otel related tools
 - `./target/` - container for build and test artifacts
 
-## Libraries
+## Tooling
+
+### Libraries
 
 - [go-srvc/srvc](https://github.com/go-srvc/srvc) - Service library for life cycle management
 - [go-srvc/mods](https://github.com/go-srvc/mods) - Ready made modules for srvc
@@ -66,19 +68,19 @@ The template is structured to provide a solid foundation while allowing easy cus
 - [automaxprocs](github.com/uber-go/automaxprocs) - Set runtime CPU resources automatically
 - [automemlimit](github.com/KimMachineGun/automemlimit) - Set runtime MEM resources automatically
 
-## Tools from OS
+### External Tools
 
 - [Make](https://www.gnu.org/software/make/) - Build automation
 - [Docker](https://docs.docker.com/engine/install/) - For containerization and local testing
 - [Docker Compose](https://docs.docker.com/compose/install/) - For local testing
 
-## Tools from Go (using [go tool](https://go.dev/doc/modules/managing-dependencies#tools))
+### Go Tools (using [go tool](https://go.dev/doc/modules/managing-dependencies#tools))
 
 - [golangci-lint](https://golangci-lint.run/) - Code quality and style enforcement
 - [gotestsum](https://github.com/gotestyourself/gotestsum) - Test output formatter
 - [ogen](https://ogen.dev/docs/intro) - OpenAPI code generation with observability and validation
 
-## CI
+### CI
 
 - [GitHub Actions](https://docs.github.com/en/actions) - CI workflows
 - [Codecov](https://app.codecov.io/github/heppu/go-template) - Code coverage
