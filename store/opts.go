@@ -70,6 +70,13 @@ func WithMigrations() sqlxmod.Opt {
 	}
 }
 
+func setDB(s *Store) sqlxmod.Opt {
+	return func(db *sqlxmod.DB) error {
+		s.db = db.DB()
+		return nil
+	}
+}
+
 func dbInfo(version uint, dirty bool, err error) {
 	l := slog.With(slog.Uint64("current_version", uint64(version)))
 	l = l.With(slog.Bool("dirty", dirty))
