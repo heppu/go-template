@@ -17,5 +17,6 @@ rename:
 	@mv ${OLD_CMD_DIR} ${NEW_CMD_DIR}
 	@sed -i 's|${OLD_CMD_DIR}|${NEW_CMD_DIR}|g' ./applicationtest/application_test.go
 	@sed -i 's|${OLD_NAME}|${NEW_NAME}|g' ./Makefile
+	@sed -i 's|${OLD_NAME}|${NEW_NAME}|g' ./Dockerfile
 	@printf "\nProject renamed succesfully, deleting rename.mk\n"
 	@rm rename.mk

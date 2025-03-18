@@ -42,7 +42,6 @@ IMG_TAGS          ?= dev
 
 ### Docker build variables
 IMG_TARGET_ARGS = ${IMG_TAGS:%=-t ${IMG_NAME}:%}
-IMG_BUILD_ARGS  = --build-arg TARGET=${TARGET}
 
 ### OpenTelemetry variables
 OTEL_ENV_VARS := OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:4318" OTEL_EXPORTER_OTLP_PROTO=http OTEL_EXPORTER_OTLP_INSECURE=true OTEL_SERVICE_NAME=${TARGET}
@@ -68,7 +67,7 @@ bin: ## Build binary
 
 .PHONY: img
 img: ## Build image
-	docker buildx build -f ./Dockerfile ${IMG_BUILD_ARGS} ${IMG_TARGET_ARGS} ${TARGET_DIR}
+	docker buildx build -f ./Dockerfile ${IMG_TARGET_ARGS} ${TARGET_DIR}
 
 .PHONY: run
 run: telemetry-up db-up ## Run application
