@@ -41,6 +41,17 @@ The template is structured to provide a solid foundation while allowing easy cus
 - `./telemetry/` - configuration for otel related tools
 - `./target/` - container for build and test artifacts
 
+## Libraries
+
+- [go-srvc/srvc](https://github.com/go-srvc/srvc) - Service library for life cycle management
+- [go-srvc/mods](https://github.com/go-srvc/mods) - Ready made modules for srvc
+- [golang-migrate](https://github.com/go-tstr/tstr/) - Database migration management
+- [jmoiron/sqlx](https://github.com/jmoiron/sqlx) - Mapping data between structs and SQL
+- [go-tstr/tstr](https://github.com/go-tstr/tstr) - Testing library with application test support
+- [stretchr/testify](https://github.com/stretchr/testify) - Test assertions
+- [automaxprocs](github.com/uber-go/automaxprocs) - Set runtime CPU resources automatically
+- [automemlimit](github.com/KimMachineGun/automemlimit) - Set runtime MEM resources automatically
+
 ## Tools from OS
 
 - [Make](https://www.gnu.org/software/make/) - Build automation
@@ -57,12 +68,3 @@ The template is structured to provide a solid foundation while allowing easy cus
 
 - [GitHub Actions](https://docs.github.com/en/actions) - CI workflows
 - [Codecov](https://app.codecov.io/github/heppu/go-template) - Code coverage
-
-## Libraries
-
-- [go-srvc/srvc](https://github.com/go-srvc/srvc) - Service library for life cycle management
-- [go-srvc/mods](https://github.com/go-srvc/mods) - Ready made modules for srvc
-- [golang-migrate](https://github.com/go-tstr/tstr/) - Database migration management
-- [jmoiron/sqlx](https://github.com/jmoiron/sqlx) - Mapping data between structs and SQL
-- [go-tstr/tstr](https://github.com/go-tstr/tstr) - Testing library with application test support
-- [stretchr/testify](https://github.com/stretchr/testify) - Test assertions

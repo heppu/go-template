@@ -72,6 +72,8 @@ img: ## Build image
 
 .PHONY: run
 run: telemetry-up db-up ## Run application
+	@printf "Starting server at http://127.0.0.1:8080\n"
+	@printf "Swagger UI available at http://127.0.0.1:8080/docs/swaggerui\n"
 	${OTEL_ENV_VARS} \
 	API_ADDR=127.0.0.1:8080 \
 	go run ${TARGET_PKG}
@@ -106,8 +108,8 @@ lint: ## Run linter
 
 .PHONY: telemetry-up
 telemetry-up: ## Start telemetry stack
-	docker compose -f ./telemetry/docker-compose.yaml up -d
-	@printf "\nJaeger UI available at http://localhost:16686\n"
+	docker compose -f ./telemetry/docker-compose.yaml up -d --wait
+	@printf "\nJaeger UI available at http://127.0.0.1:16686\n"
 
 .PHONY: telemetry-down
 telemetry-down: ## Stop telemetry stack
@@ -115,8 +117,7 @@ telemetry-down: ## Stop telemetry stack
 
 .PHONY: db-up
 db-up: ## Start db
-	docker compose up -d
-	@printf "\nJaeger UI available at http://localhost:16686\n"
+	docker compose up -d --wait
 
 .PHONY: db-down
 db-down: ## Stop db
