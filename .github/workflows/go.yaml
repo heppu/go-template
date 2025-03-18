@@ -100,7 +100,6 @@ jobs:
         with:
           key: ${{ runner.os }}-go-cache
           path: |
-            ~/.magefile
             ~/.cache/golangci-lint
             ~/.cache/go-build
             ~/go/pkg/mod
