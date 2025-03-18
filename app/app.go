@@ -1,3 +1,4 @@
+// Package app wraps the storage layer with application logic and provides an interface for API layer.
 package app
 
 import (

@@ -1,3 +1,4 @@
+// Package server wraps the application logic inside HTTP server.
 package server
 
 //go:generate go tool github.com/ogen-go/ogen/cmd/ogen --clean --config ../.ogen.yaml --target ../api -package api ./openapi.yaml
@@ -20,6 +21,10 @@ var swaggerUI embed.FS
 // New returns a function that creates a new http.Server.
 // This functions composes the application and binds it to the server.
 // Here you can configure custom middlewares, routes, etc.
+//
+// The binding chain goes as follows:
+//
+// http.Server -> http.ServeMux -> api.Server -> app.App -> store.Store
 func New(s app.Store) func() (*http.Server, error) {
 	return func() (*http.Server, error) {
 		srv, err := api.NewServer(app.New(s))

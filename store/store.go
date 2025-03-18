@@ -1,3 +1,4 @@
+// Package store abstracts the database layer behind store.Store methods.
 package store
 
 import (
@@ -11,6 +12,7 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
+// Store wraps the sqlxmod module and provides an interface to interact with the database.
 type Store struct {
 	srvc.Module
 	db NamedDB
