@@ -2,6 +2,7 @@ package store_test
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -22,6 +23,7 @@ func TestMain(m *testing.M) {
 	os.Setenv("POSTGRES_DB", "test")
 	os.Setenv("POSTGRES_SSLMODE", "disable")
 	os.Setenv("POSTGRES_HOST", "127.0.0.1")
+	fmt.Println("Opening DB in port", os.Getenv("POSTGRES_PORT"))
 
 	tstr.RunMain(m, tstr.WithDeps(compose.New(
 		compose.WithFile("../docker-compose.yaml"),
