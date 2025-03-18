@@ -75,7 +75,7 @@ jobs:
       - name: Application test
         run: make test/app
 
-      - name: Upload application test
+      - name: Upload application test coverage
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
