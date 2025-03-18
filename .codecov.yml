@@ -13,8 +13,8 @@ coverage:
           - application
 
 ignore:
-  - "applicationtest"
-  - "store/migrations"
-  - "server/swaggerui"
-  - "target"
-  - "telemetry"
+  - "api" # generated code
+  - "applicationtest" # only tests
+  - "store/migrations" # sql migrations
+  - "server/swaggerui" # swaggerui artifacts
+  - "telemetry" # telemetry stack files
