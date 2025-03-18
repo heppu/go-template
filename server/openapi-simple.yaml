@@ -1,0 +1,168 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/OpenAPI-Specification/refs/heads/main/schemas/v3.1/schema.yaml
+openapi: "3.1.0"
+servers:
+  - url: /api/v1
+info:
+  version: 1.0.0
+  title: API schema
+paths:
+  /healthz:
+    get:
+      summary: Servers health check endpoint
+      tags:
+        - health
+      operationId: healthz
+      responses:
+        "200":
+          $ref: "#/components/responses/HealthyResp"
+        default:
+          $ref: "#/components/responses/ErrorResp"
+  /tasks:
+    get:
+      summary: Returns list of all task
+      tags:
+        - tasks
+      responses:
+        "200":
+          $ref: "#/components/responses/TasksResp"
+        default:
+          $ref: "#/components/responses/ErrorResp"
+    post:
+      summary: Create new task
+      tags:
+        - tasks
+      requestBody:
+        $ref: "#/components/requestBodies/NewTask"
+      responses:
+        "200":
+          $ref: "#/components/responses/TaskResp"
+        default:
+          $ref: "#/components/responses/ErrorResp"
+  /tasks/{id}:
+    get:
+      summary: Returns task by id
+      tags:
+        - tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID
+          schema:
+            type: integer
+      responses:
+        "200":
+          $ref: "#/components/responses/TaskResp"
+        default:
+          $ref: "#/components/responses/ErrorResp"
+    put:
+      summary: Update task
+      tags:
+        - tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID
+          schema:
+            type: integer
+      requestBody:
+        $ref: "#/components/requestBodies/NewTask"
+      responses:
+        "200":
+          $ref: "#/components/responses/TaskResp"
+        default:
+          $ref: "#/components/responses/ErrorResp"
+    delete:
+      summary: Delete  task
+      tags:
+        - tasks
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Task ID
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Task deleted
+        default:
+          $ref: "#/components/responses/ErrorResp"
+
+components:
+  schemas:
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+    Healthy:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    Task:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+    NewTask:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+
+  requestBodies:
+    NewTask:
+      description: New task to be created
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NewTask"
+
+  responses:
+    ErrorResp:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            error: Unexpected server error
+    HealthyResp:
+      description: Response from healthy server
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Healthy"
+          example:
+            message: OK
+    TasksResp:
+      description: Response for task listing
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Task"
+    TaskResp:
+      description: Response for single task
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Task"
