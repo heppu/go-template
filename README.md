@@ -31,7 +31,8 @@ The template is structured to provide a solid foundation while allowing easy cus
 - `./.github/` - configuration files for github actions
 - `./.golanci.yaml` - configuration golangci-linter
 - `./.ogen.yaml` - configuration ogen api generator
-- `./openapi.yaml` - api specification
+- `./server/openapi.yaml` - api specification
+- `./server/swaggerui` - swagger ui files
 - `./docker-compose.yaml` - configuration for services used in test
 - `./Dockerfile` - image definition for Go binaries
 - `./Makefile` - build tooling configuration

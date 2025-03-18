@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/OpenAPI-Specification/refs/heads/main/schemas/v3.1/schema.yaml
 openapi: "3.1.0"
 servers:
-  - url: /
+  - url: /api/v1
 info:
   version: 1.0.0
   title: API schema

@@ -47,6 +47,12 @@ IMG_BUILD_ARGS  = --build-arg TARGET=${TARGET}
 ### OpenTelemetry variables
 OTEL_ENV_VARS := OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:4318" OTEL_EXPORTER_OTLP_PROTO=http OTEL_EXPORTER_OTLP_INSECURE=true OTEL_SERVICE_NAME=${TARGET}
 
+### Swagger UI
+SWAGGER_UI_VERSION := 5.20.1
+SWAGGER_UI_DIR     := ./server/swaggerui
+SWAGGER_OLD_URL    := https://petstore.swagger.io/v2/swagger.json
+SWAGGER_NEW_URL    := /docs/openapi.yaml
+
 .DEFAULT_GOAL := help
 .PHONY: help
 help: ## Display help
@@ -66,7 +72,9 @@ img: ## Build image
 
 .PHONY: run
 run: telemetry-up db-up ## Run application
-	${OTEL_ENV_VARS} go run ${TARGET_PKG}
+	${OTEL_ENV_VARS} \
+	API_ADDR=127.0.0.1:8080 \
+	go run ${TARGET_PKG}
 
 .PHONY: test
 test: test/unit test/app ## Run all tests
@@ -122,6 +130,14 @@ download:
 .PHONY: generate
 generate: ## Run code generators
 	go generate ./...
+
+update-swagger-ui: ## Update Swagger UI
+	rm -rf ${SWAGGER_UI_DIR}
+	mkdir -p ${SWAGGER_UI_DIR}
+	curl -s -L https://github.com/swagger-api/swagger-ui/archive/refs/tags/v${SWAGGER_UI_VERSION}.tar.gz | \
+		tar -zxv --strip-components=2 -C ${SWAGGER_UI_DIR} swagger-ui-${SWAGGER_UI_VERSION}/dist/
+	rm ${SWAGGER_UI_DIR}/*.map
+	sed -i 's|${SWAGGER_OLD_URL}|${SWAGGER_NEW_URL}|g' ./server/swaggerui/swagger-initializer.js
 
 .PHONY: clean
 clean: ## Clean up environment

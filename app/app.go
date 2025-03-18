@@ -1,7 +1,5 @@
 package app
 
-//go:generate go tool github.com/ogen-go/ogen/cmd/ogen --clean --config ../.ogen.yaml --target ../api -package api ../openapi.yaml
-
 import (
 	"context"
 	"log/slog"
