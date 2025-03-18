@@ -26,6 +26,17 @@ This template provides a solid foundation for building scalable, observable, and
 2. Write `CREATE TABLE` statement in that file
 3. Now your migration is automatically applied when application starts
 
+### Example
+
+You can test this with simple example spec by running:
+
+```sh
+mv ./server/openapi-simple.yaml ./server/openapi.yaml
+make generete
+```
+
+And now just implement missing methods in `./app/app.go`.
+
 ## Project layout
 
 The template is structured to provide a solid foundation while allowing easy customization for your specific project needs.
