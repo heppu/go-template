@@ -31,7 +31,7 @@ func (c *codeRecorder) WriteHeader(status int) {
 
 // handleHealthzRequest handles healthz operation.
 //
-// Returns OK if service is healthy.
+// Servers health check endpoint.
 //
 // GET /healthz
 func (s *Server) handleHealthzRequest(args [0]string, argsEscaped bool, w http.ResponseWriter, r *http.Request) {

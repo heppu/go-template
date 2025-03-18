@@ -10,7 +10,7 @@ import (
 type Handler interface {
 	// Healthz implements healthz operation.
 	//
-	// Returns OK if service is healthy.
+	// Servers health check endpoint.
 	//
 	// GET /healthz
 	Healthz(ctx context.Context) (*Healthy, error)
