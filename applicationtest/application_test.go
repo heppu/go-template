@@ -32,7 +32,7 @@ func TestMain(m *testing.M) {
 	os.Setenv("POSTGRES_SSLMODE", "disable")
 	os.Setenv("POSTGRES_HOST", "127.0.0.1")
 
-	os.Setenv("OTEL_RESOURCE_ATTRIBUTES", "service.version=0.1.0")
+	os.Setenv("OTEL_RESOURCE_ATTRIBUTES", "service.version=0.0.0-dev")
 	os.Setenv("API_ADDR", fmt.Sprintf("127.0.0.1:%d", apiPort))
 
 	tstr.RunMain(m, tstr.WithDeps(
