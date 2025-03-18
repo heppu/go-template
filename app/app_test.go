@@ -27,3 +27,19 @@ func TestNewError(t *testing.T) {
 
 	assert.Equal(t, expected, *err)
 }
+
+func TestApp_Healthz_PropagateError(t *testing.T) {
+	rootErr := errors.New("some error")
+	a := app.New(&MockStore{err: rootErr})
+	resp, err := a.Healthz(context.Background())
+	assert.Nil(t, resp)
+	assert.ErrorIs(t, err, rootErr)
+	assert.ErrorIs(t, err, app.ErrServiceNotHealthy)
+}
+
+type MockStore struct {
+	app.Store
+	err error
+}
+
+func (m *MockStore) Healthy(ctx context.Context) error { return m.err }
