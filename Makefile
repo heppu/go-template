@@ -1,10 +1,13 @@
 ## Requirements:
 #	- go
-#	- docker
 #	- awk
+#	- sed
 #	- printf
 #	- cut
 #	- uniq
+#	- curl
+#	- docker
+#	- docker-compose
 
 ### Environment variables
 
@@ -88,13 +91,13 @@ test: test/unit test/app ## Run all tests and show coverage
 test/unit: ## Run unit tests
 	rm -rf ${UNIT_BIN_COV_DIR} ${UNIT_TXT_COV_DIR} ${UNIT_JUNIT_DIR}
 	mkdir -p ${UNIT_BIN_COV_DIR} ${UNIT_TXT_COV_DIR} ${UNIT_JUNIT_DIR}
-	CGO_ENABLED=1 go tool gotestsum --junitfile=${UNIT_JUNIT_DIR}/junit.xml -- -race -covermode=atomic -coverprofile=${UNIT_TXT_COV_DIR}/cover.txt ./... -test.gocoverdir=$(abspath ${UNIT_BIN_COV_DIR})
+	CGO_ENABLED=1 go tool gotest.tools/gotestsum --junitfile=${UNIT_JUNIT_DIR}/junit.xml -- -race -covermode=atomic -coverprofile=${UNIT_TXT_COV_DIR}/cover.txt ./... -test.gocoverdir=$(abspath ${UNIT_BIN_COV_DIR})
 
 .PHONY: test/app
 test/app: ## Run application tests
 	rm -rf ${APP_BIN_DIR} ${APP_TXT_COV_DIR} ${APP_JUNIT_DIR}
 	mkdir -p ${APP_BIN_DIR} ${APP_TXT_COV_DIR} ${APP_JUNIT_DIR}
-	GOCOVERDIR=$(abspath ${APP_BIN_DIR}) go tool gotestsum --junitfile=${APP_JUNIT_DIR}/junit.xml -- -tags=applicationtest -count=1 ./applicationtest/...
+	GOCOVERDIR=$(abspath ${APP_BIN_DIR}) go tool gotest.tools/gotestsum --junitfile=${APP_JUNIT_DIR}/junit.xml -- -tags=applicationtest -count=1 ./applicationtest/...
 	go tool covdata textfmt -i=${APP_BIN_DIR} -o ${APP_TXT_COV_DIR}/cover.txt
 
 .PHONY: test/app-otel

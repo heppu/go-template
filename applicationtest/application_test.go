@@ -20,9 +20,8 @@ import (
 )
 
 var (
-	apiPort   = mustFreePort()
-	pprofPort = mustFreePort()
-	appURL    = fmt.Sprintf("http://127.0.0.1:%d", apiPort)
+	apiPort = mustFreePort()
+	appURL  = fmt.Sprintf("http://127.0.0.1:%d", apiPort)
 )
 
 func TestMain(m *testing.M) {
@@ -32,8 +31,9 @@ func TestMain(m *testing.M) {
 	os.Setenv("POSTGRES_DB", "test")
 	os.Setenv("POSTGRES_SSLMODE", "disable")
 	os.Setenv("POSTGRES_HOST", "127.0.0.1")
+
 	os.Setenv("OTEL_RESOURCE_ATTRIBUTES", "service.version=0.1.0")
-	os.Setenv("OTEL_SERVICE_NAME", "app")
+	os.Setenv("API_ADDR", fmt.Sprintf("127.0.0.1:%d", apiPort))
 
 	tstr.RunMain(m, tstr.WithDeps(
 		compose.New(
@@ -43,9 +43,8 @@ func TestMain(m *testing.M) {
 		cmd.New(
 			cmd.WithGoCode("../", "./cmd/demo"),
 			cmd.WithReadyHTTP(appURL+"/api/v1/healthz"),
-			cmd.WithEnvAppend(os.Environ()...),
-			cmd.WithGoCoverDir(os.Getenv("GOCOVERDIR")),
-			cmd.WithEnvAppend(fmt.Sprintf("API_ADDR=:%d", apiPort)),
+			cmd.WithEnvSet(os.Environ()...),
+			cmd.WithGoCover(),
 		),
 	))
 }

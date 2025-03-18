@@ -2,10 +2,14 @@ package app
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 
+	"github.com/go-srvc/srvc"
 	"github.com/heppu/go-template/api"
 )
+
+const ErrServiceNotHealthy = srvc.ErrStr("service not healthy")
 
 type Store interface {
 	Healthy(context.Context) error
@@ -21,7 +25,7 @@ func New(s Store) *App {
 
 func (a *App) Healthz(ctx context.Context) (*api.Healthy, error) {
 	if err := a.s.Healthy(ctx); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%w: %w", ErrServiceNotHealthy, err)
 	}
 	return &api.Healthy{Message: "OK"}, nil
 }

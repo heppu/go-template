@@ -1,7 +1,6 @@
 package main
 
 import (
-
 	// Timezone data for scratch image
 	_ "time/tzdata"
 
@@ -21,6 +20,7 @@ import (
 
 func main() {
 	s := store.New(store.WithDefaults()...)
+
 	srvc.RunAndExit(
 		logmod.New(),
 		sigmod.New(),
