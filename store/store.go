@@ -7,14 +7,13 @@ import (
 
 	"github.com/go-srvc/mods/sqlxmod"
 	"github.com/go-srvc/srvc"
-	"github.com/jmoiron/sqlx"
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 type Store struct {
 	srvc.Module
-	db *sqlx.DB
+	db NamedDB
 }
 
 func New(opts ...sqlxmod.Opt) *Store {

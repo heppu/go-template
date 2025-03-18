@@ -72,8 +72,8 @@ img: ## Build image
 
 .PHONY: run
 run: telemetry-up db-up ## Run application
-	@printf "Starting server at http://127.0.0.1:8080\n"
-	@printf "Swagger UI available at http://127.0.0.1:8080/docs/swaggerui\n"
+	@printf "\nStarting server at http://127.0.0.1:8080\n"
+	@printf "Swagger UI available at http://127.0.0.1:8080/docs/swaggerui\n\n"
 	${OTEL_ENV_VARS} \
 	API_ADDR=127.0.0.1:8080 \
 	go run ${TARGET_PKG}
