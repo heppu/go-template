@@ -1,12 +1,15 @@
 package main
 
 import (
-	// Timezone data for scratch image
-	_ "time/tzdata"
+	"cmp"
+	"net/http"
+	"os"
 
-	// Automated resource configuration for container envs
-	_ "github.com/KimMachineGun/automemlimit"
-	_ "go.uber.org/automaxprocs"
+	_ "net/http/pprof" // Instrument http.DefaultServeMux with pprof
+	_ "time/tzdata"    // Import time zone data
+
+	_ "github.com/KimMachineGun/automemlimit" // Set GOMEMLIMIT automatically
+	_ "go.uber.org/automaxprocs"              // Set GOMAXPROCS automatically
 
 	"github.com/go-srvc/mods/httpmod"
 	"github.com/go-srvc/mods/logmod"
@@ -27,6 +30,10 @@ func main() {
 		tracemod.New(),
 		metermod.New(),
 		s,
+		httpmod.New(
+			httpmod.WithAddr(cmp.Or(os.Getenv("PPROF_ADDR"), ":6060")),
+			httpmod.WithHandler(http.DefaultServeMux),
+		),
 		httpmod.New(httpmod.WithServerFn(server.New(s))),
 	)
 }
