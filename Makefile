@@ -18,6 +18,8 @@ export CGO_ENABLED ?= 0
 ### Static variables
 DIST_DIR          := target/dist
 TEST_DIR          := target/test
+TRACE_DIR         := target/trace
+TRACE_FILE        := ${TRACE_DIR}/trace.out
 UNIT_COV_DIR      := ${TEST_DIR}/unit
 UNIT_BIN_COV_DIR  := ${UNIT_COV_DIR}/cov/bin
 UNIT_TXT_COV_DIR  := ${UNIT_COV_DIR}/cov/txt
@@ -46,8 +48,9 @@ IMG_TAGS          ?= dev
 ### Docker build variables
 IMG_TARGET_ARGS = ${IMG_TAGS:%=-t ${IMG_NAME}:%}
 
-### OpenTelemetry variables
+### App environment variables
 OTEL_ENV_VARS := OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:4318" OTEL_EXPORTER_OTLP_PROTO=http OTEL_EXPORTER_OTLP_INSECURE=true OTEL_SERVICE_NAME=${TARGET}
+APP_ENV_VARS      := API_ADDR="127.0.0.1:8080" ${OTEL_ENV_VARS}
 
 ### Swagger UI
 SWAGGER_UI_VERSION := 5.20.1
@@ -72,13 +75,20 @@ bin: ## Build binary
 img: ## Build image
 	docker buildx build -f ./Dockerfile ${IMG_TARGET_ARGS} ${TARGET_DIR}
 
-.PHONY: run
-run: telemetry-up db-up ## Run application
+.PHONY: run/bin
+run/bin: bin telemetry-up db-up ## Run application binary
 	@printf "\nStarting server at http://127.0.0.1:8080\n"
 	@printf "Swagger UI available at http://127.0.0.1:8080/docs/swaggerui\n\n"
-	${OTEL_ENV_VARS} \
-	API_ADDR=127.0.0.1:8080 \
-	go run ${TARGET_PKG}
+	${APP_ENV_VARS} \
+	${TARGET_BIN}
+
+.PHONY: run/img
+run/img: bin img telemetry-up db-up ## Run application image
+	@printf "\nStarting server at http://127.0.0.1:8080\n"
+	@printf "Swagger UI available at http://127.0.0.1:8080/docs/swaggerui\n\n"
+	docker run -it --network=host --cpus=1 -m128M \
+		${APP_ENV_VARS:%=-e %} \
+		${IMG_NAME}:dev
 
 .PHONY: test
 test: test/unit test/app ## Run all tests and show coverage
@@ -128,6 +138,13 @@ db-down: ## Stop db
 .PHONY: generate
 generate: ## Run code generators
 	go generate ./...
+
+.PHONY: trace
+trace: ## Collect and open trace data
+	@printf "\nGenerating trace files...\n"
+	@mkdir -p ${TRACE_DIR}
+	wget -O ${TRACE_FILE} "http://127.0.0.1:6060/debug/pprof/trace?seconds=5"
+	@go tool trace ${TRACE_FILE}
 
 .PHONY: update-swagger-ui
 update-swagger-ui: ## Update Swagger UI
