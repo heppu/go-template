@@ -32,7 +32,7 @@ You can test this with simple example spec by running:
 
 ```sh
 mv ./server/openapi-simple.yaml ./server/openapi.yaml
-make generete
+make generate
 ```
 
 And now just implement missing methods in `./app/app.go`.
