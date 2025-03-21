@@ -58,13 +58,18 @@ SWAGGER_UI_DIR     := ./server/swaggerui
 SWAGGER_OLD_URL    := https://petstore.swagger.io/v2/swagger.json
 SWAGGER_NEW_URL    := /docs/openapi.yaml
 
+# Sed inplace replace compatibility with BSD sed
+ifeq ($(findstring GNU,$(shell strings $$(which sed))),)
+    SED_INPLACE_ARG := ''
+endif
+
 .DEFAULT_GOAL := help
 .PHONY: help
 help: ## Show help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z0-9_\/-]+:.*?##/ { printf "  \033[36m%-20s\033[0m  %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 .PHONY: all
-all: clean .WAIT generate .WAIT lint test bin .WAIT img ## Test, lint and build project
+all: clean generate lint test bin img ## Test, lint and build project
 
 .PHONY: bin
 bin: ## Build binary
@@ -107,7 +112,7 @@ test/unit: ## Run unit tests
 test/app: ## Run application tests
 	rm -rf ${APP_BIN_DIR} ${APP_TXT_COV_DIR} ${APP_JUNIT_DIR}
 	mkdir -p ${APP_BIN_DIR} ${APP_TXT_COV_DIR} ${APP_JUNIT_DIR}
-	GOCOVERDIR=$(abspath ${APP_BIN_DIR}) go tool gotest.tools/gotestsum --junitfile=${APP_JUNIT_DIR}/junit.xml -- -tags=applicationtest -count=1 ./applicationtest/...
+	CGO_ENABLED=1 GOCOVERDIR=$(abspath ${APP_BIN_DIR}) go tool gotest.tools/gotestsum --junitfile=${APP_JUNIT_DIR}/junit.xml -- -tags=applicationtest -count=1 ./applicationtest/...
 	go tool covdata textfmt -i=${APP_BIN_DIR} -o ${APP_TXT_COV_DIR}/cover.txt
 
 .PHONY: test/app-otel
@@ -116,7 +121,7 @@ test/app-otel: telemetry-up ## Run application tests with OpenTelemetry
 
 .PHONY: lint
 lint: ## Run linter
-	go tool github.com/golangci/golangci-lint/cmd/golangci-lint run ./...
+	CGO_ENABLED=1 go tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint run ./...
 
 .PHONY: telemetry-up
 telemetry-up: ## Start telemetry stack
@@ -153,7 +158,7 @@ update-swagger-ui: ## Update Swagger UI
 	curl -s -L https://github.com/swagger-api/swagger-ui/archive/refs/tags/v${SWAGGER_UI_VERSION}.tar.gz | \
 		tar -zxv --strip-components=2 -C ${SWAGGER_UI_DIR} swagger-ui-${SWAGGER_UI_VERSION}/dist/
 	rm ${SWAGGER_UI_DIR}/*.map
-	sed -i 's|${SWAGGER_OLD_URL}|${SWAGGER_NEW_URL}|g' ./server/swaggerui/swagger-initializer.js
+	sed -i ${SED_INPLACE_ARG} 's|${SWAGGER_OLD_URL}|${SWAGGER_NEW_URL}|g' ./server/swaggerui/swagger-initializer.js
 
 .PHONY: clean
 clean: ## Clean up environment
