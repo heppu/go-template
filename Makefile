@@ -58,13 +58,28 @@ SWAGGER_UI_DIR     := ./server/swaggerui
 SWAGGER_OLD_URL    := https://petstore.swagger.io/v2/swagger.json
 SWAGGER_NEW_URL    := /docs/openapi.yaml
 
+# Sed inplace replace compatibility with BSD sed
+GNU_SED_CHECK := $(shell sed --version 2>/dev/null | head -n1 | grep -i GNU)
+ifeq ($(GNU_SED_CHECK),)
+    SED_INPLACE_FLAG = -i ''
+else
+    SED_INPLACE_FLAG = -i
+endif
+
+# Define WAIT based on the OS.
+ifeq ($(shell uname -s),Darwin)
+    WAIT :=
+else
+    WAIT := .WAIT
+endif
+
 .DEFAULT_GOAL := help
 .PHONY: help
 help: ## Show help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z0-9_\/-]+:.*?##/ { printf "  \033[36m%-20s\033[0m  %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 .PHONY: all
-all: clean .WAIT generate .WAIT lint test bin .WAIT img ## Test, lint and build project
+all: clean $(WAIT) generate $(WAIT) lint test bin $(WAIT) img ## Test, lint and build project
 
 .PHONY: bin
 bin: ## Build binary
@@ -153,7 +168,7 @@ update-swagger-ui: ## Update Swagger UI
 	curl -s -L https://github.com/swagger-api/swagger-ui/archive/refs/tags/v${SWAGGER_UI_VERSION}.tar.gz | \
 		tar -zxv --strip-components=2 -C ${SWAGGER_UI_DIR} swagger-ui-${SWAGGER_UI_VERSION}/dist/
 	rm ${SWAGGER_UI_DIR}/*.map
-	sed -i 's|${SWAGGER_OLD_URL}|${SWAGGER_NEW_URL}|g' ./server/swaggerui/swagger-initializer.js
+	sed $(SED_INPLACE_FLAG) 's|${SWAGGER_OLD_URL}|${SWAGGER_NEW_URL}|g' ./server/swaggerui/swagger-initializer.js
 
 .PHONY: clean
 clean: ## Clean up environment
