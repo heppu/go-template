@@ -21,7 +21,7 @@ require (
 	github.com/go-srvc/mods/tracemod v0.2.3
 	github.com/go-srvc/srvc v0.2.0
 	github.com/go-tstr/tstr v0.1.3
-	github.com/golang-migrate/migrate/v4 v4.18.2
+	github.com/golang-migrate/migrate/v4 v4.18.3
 	github.com/heppu/errgroup v1.0.0
 	github.com/jackc/pgx/v5 v5.7.4
 	github.com/jmoiron/sqlx v1.4.0
