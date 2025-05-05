@@ -9,7 +9,7 @@ tool (
 )
 
 require (
-	github.com/KimMachineGun/automemlimit v0.7.1
+	github.com/KimMachineGun/automemlimit v0.7.2
 	github.com/XSAM/otelsql v0.38.0
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.1.0
