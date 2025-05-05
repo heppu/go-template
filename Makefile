@@ -115,6 +115,11 @@ test/app: ## Run application tests
 	CGO_ENABLED=1 GOCOVERDIR=$(abspath ${APP_BIN_DIR}) go tool gotest.tools/gotestsum --junitfile=${APP_JUNIT_DIR}/junit.xml -- -tags=applicationtest -count=1 ./applicationtest/...
 	go tool covdata textfmt -i=${APP_BIN_DIR} -o ${APP_TXT_COV_DIR}/cover.txt
 
+.PHONY: test/app-recreate
+test/app-recreate: ## Recreate golden files
+	rm -rf ./applicationtest/testdata
+	GOLDEN_FILES_RECREATE=true $(MAKE) test/app
+
 .PHONY: test/app-otel
 test/app-otel: telemetry-up ## Run application tests with OpenTelemetry
 	${OTEL_ENV_VARS} $(MAKE) test/app

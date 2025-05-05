@@ -1,6 +1,6 @@
 module github.com/heppu/go-template
 
-go 1.24.1
+go 1.24.2
 
 tool (
 	github.com/golangci/golangci-lint/v2/cmd/golangci-lint
@@ -20,6 +20,7 @@ require (
 	github.com/go-srvc/mods/sqlxmod v0.2.3
 	github.com/go-srvc/mods/tracemod v0.2.3
 	github.com/go-srvc/srvc v0.2.0
+	github.com/go-tstr/golden v0.1.0
 	github.com/go-tstr/tstr v0.1.4
 	github.com/golang-migrate/migrate/v4 v4.18.3
 	github.com/heppu/errgroup v1.0.0
@@ -326,6 +327,7 @@ require (
 	github.com/testcontainers/testcontainers-go/modules/compose v0.36.0 // indirect
 	github.com/tetafro/godot v1.5.1 // indirect
 	github.com/theupdateframework/notary v0.7.0 // indirect
+	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tilt-dev/fsnotify v1.4.8-0.20220602155310-fff9c274a375 // indirect
 	github.com/timakin/bodyclose v0.0.0-20241222091800-1db5c5ca4d67 // indirect
 	github.com/timonwong/loggercheck v0.11.0 // indirect
