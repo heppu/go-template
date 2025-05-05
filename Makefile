@@ -53,7 +53,7 @@ OTEL_ENV_VARS := OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:4318" OTEL_EXPORT
 APP_ENV_VARS      := API_ADDR="127.0.0.1:8080" ${OTEL_ENV_VARS}
 
 ### Swagger UI
-SWAGGER_UI_VERSION := 5.20.1
+SWAGGER_UI_VERSION := 5.21.0
 SWAGGER_UI_DIR     := ./server/swaggerui
 SWAGGER_OLD_URL    := https://petstore.swagger.io/v2/swagger.json
 SWAGGER_NEW_URL    := /docs/openapi.yaml
