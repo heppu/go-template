@@ -4,7 +4,6 @@ package applicationtest
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"net"
 	"net/http"
@@ -12,10 +11,10 @@ import (
 	"strconv"
 	"testing"
 
+	"github.com/go-tstr/golden"
 	"github.com/go-tstr/tstr"
 	"github.com/go-tstr/tstr/dep/cmd"
 	"github.com/go-tstr/tstr/dep/compose"
-	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
 
@@ -35,6 +34,7 @@ func TestMain(m *testing.M) {
 	os.Setenv("OTEL_RESOURCE_ATTRIBUTES", "service.version=0.0.0-dev")
 	os.Setenv("API_ADDR", fmt.Sprintf("127.0.0.1:%d", apiPort))
 
+	golden.DefaultHandler.ProcessContent = golden.PrettyJSON
 	tstr.RunMain(m, tstr.WithDeps(
 		compose.New(
 			compose.WithFile("../docker-compose.yaml"),
@@ -50,12 +50,10 @@ func TestMain(m *testing.M) {
 }
 
 func TestHealthy(t *testing.T) {
-	resp, err := http.Get(appURL + "/api/v1/healthz")
+	req, err := http.NewRequest(http.MethodGet, appURL+"/api/v1/healthz", nil)
 	require.NoError(t, err)
-	assert.Equal(t, http.StatusOK, resp.StatusCode)
-	data, err := io.ReadAll(resp.Body)
-	require.NoError(t, err)
-	assert.Equal(t, `{"message":"OK"}`, string(data))
+	req.Header.Set("Content-Type", "application/json")
+	golden.Request(t, http.DefaultClient, req, 200)
 }
 
 func mustFreePort() int {
