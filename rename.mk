@@ -26,6 +26,7 @@ rename:
 	@find . -type f -name '*.go' -exec sed -i ${SED_INPLACE_ARG} 's|${OLD_MODULE}|${NEW_MODULE}|g' {} \;
 	@mv ${OLD_CMD_DIR} ${NEW_CMD_DIR}
 	@sed -i ${SED_INPLACE_ARG} 's|${OLD_CMD_DIR}|${NEW_CMD_DIR}|g' ./applicationtest/application_test.go
+	@sed -i ${SED_INPLACE_ARG} 's|${OLD_MODULE}|${NEW_MODULE}|g' ./README.md
 	@sed -i ${SED_INPLACE_ARG} 's|${OLD_NAME}|${NEW_NAME}|g' ./Makefile
 	@sed -i ${SED_INPLACE_ARG} 's|${OLD_NAME}|${NEW_NAME}|g' ./Dockerfile
 	@printf "\nProject renamed succesfully, deleting rename.mk\n"
