@@ -10,7 +10,7 @@ generator:
       - "paths/server"
       - "server/response/validation"
       - "ogen/otel"
-      # - "ogen/unimplemented"
+      - "ogen/unimplemented"
       # - "debug/example_tests"
       # - "paths/client"
       # - "client/request/validation"

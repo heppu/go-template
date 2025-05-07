@@ -17,6 +17,7 @@ type Store interface {
 }
 
 type App struct {
+	api.UnimplementedHandler
 	s Store
 }
 
