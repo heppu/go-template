@@ -46,7 +46,8 @@ IMG_NAME		  ?= $(subst ${SPACE},/,$(filter-out ,$(strip ${IMG_REG} ${IMG_REPO} $
 IMG_TAGS          ?= dev
 
 ### Docker build variables
-IMG_TARGET_ARGS = ${IMG_TAGS:%=-t ${IMG_NAME}:%}
+### Transform the image tags to lowercase to avoid issues with docker buildx
+IMG_TARGET_ARGS = $(shell echo '${IMG_TAGS:%=-t ${IMG_NAME}:%}' | tr '[:upper:]' '[:lower:]')
 
 ### App environment variables
 OTEL_ENV_VARS := OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:4318" OTEL_EXPORTER_OTLP_PROTO=http OTEL_EXPORTER_OTLP_INSECURE=true OTEL_SERVICE_NAME=${TARGET}
