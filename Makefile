@@ -126,8 +126,15 @@ test/app-otel: telemetry-up ## Run application tests with OpenTelemetry
 	${OTEL_ENV_VARS} $(MAKE) test/app
 
 .PHONY: lint
-lint: ## Run linter
+lint: lint/ci lint/gosec ## Run linter
+
+.PHONY: lint/ci
+lint/ci:
 	CGO_ENABLED=1 go tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint run ./...
+
+.PHONY: lint/gosec
+lint/gosec:
+	CGO_ENABLED=1 go tool github.com/securego/gosec/cmd/gosec ./...
 
 .PHONY: telemetry-up
 telemetry-up: ## Start telemetry stack
