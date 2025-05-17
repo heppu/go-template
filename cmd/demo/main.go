@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	_ "net/http/pprof" // Instrument http.DefaultServeMux with pprof
+	_ "net/http/pprof" // #nosec G108 Instrument http.DefaultServeMux with pprof
 	_ "time/tzdata"    // Import time zone data
 
 	_ "github.com/KimMachineGun/automemlimit" // Set GOMEMLIMIT automatically
