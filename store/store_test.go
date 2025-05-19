@@ -17,12 +17,12 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	os.Setenv("POSTGRES_PORT", strconv.Itoa(mustFreePort()))
-	os.Setenv("POSTGRES_USER", "test")
-	os.Setenv("POSTGRES_PASSWORD", "test")
-	os.Setenv("POSTGRES_DB", "test")
-	os.Setenv("POSTGRES_SSLMODE", "disable")
-	os.Setenv("POSTGRES_HOST", "127.0.0.1")
+	mustSetenv("POSTGRES_PORT", strconv.Itoa(mustFreePort()))
+	mustSetenv("POSTGRES_USER", "test")
+	mustSetenv("POSTGRES_PASSWORD", "test")
+	mustSetenv("POSTGRES_DB", "test")
+	mustSetenv("POSTGRES_SSLMODE", "disable")
+	mustSetenv("POSTGRES_HOST", "127.0.0.1")
 	fmt.Println("Opening DB in port", os.Getenv("POSTGRES_PORT"))
 
 	tstr.RunMain(m, tstr.WithDeps(compose.New(
@@ -51,12 +51,21 @@ func mustFreePort() int {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer listener.Close()
 
 	tcpAddr, ok := listener.Addr().(*net.TCPAddr)
 	if !ok {
 		log.Fatal(err)
 	}
 
+	if err := listener.Close(); err != nil {
+		log.Fatal("Failed to close listener:", err)
+	}
+
 	return tcpAddr.Port
+}
+
+func mustSetenv(k, v string) {
+	if err := os.Setenv(k, v); err != nil {
+		log.Fatal(err)
+	}
 }

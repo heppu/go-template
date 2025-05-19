@@ -5,11 +5,15 @@ import (
 	"net/http"
 	"os"
 
-	_ "net/http/pprof" // Instrument http.DefaultServeMux with pprof
-	_ "time/tzdata"    // Import time zone data
+	// Instrument http.DefaultServeMux with pprof
+	_ "net/http/pprof" //nolint: gosec
+	// Import time zone data
+	_ "time/tzdata"
 
-	_ "github.com/KimMachineGun/automemlimit" // Set GOMEMLIMIT automatically
-	_ "go.uber.org/automaxprocs"              // Set GOMAXPROCS automatically
+	// Set GOMEMLIMIT automatically
+	_ "github.com/KimMachineGun/automemlimit"
+	// Set GOMAXPROCS automatically
+	_ "go.uber.org/automaxprocs"
 
 	"github.com/go-srvc/mods/httpmod"
 	"github.com/go-srvc/mods/logmod"

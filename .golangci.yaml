@@ -1,19 +1,35 @@
 version: "2"
 linters:
+  default: fast
+  enable:
+    - bodyclose
+    - errcheck
+    - errorlint
+    - forcetypeassert
+    - gocritic
+    - govet
+    - gosec
+    - iface
+    - sloglint
+    - staticcheck
+    - unconvert
+    - unparam
+    - unused
+  disable:
+    - depguard
+    - wsl
+    - nlreturn
+    - mnd
+    - nosprintfhostport
+    - inamedparam
+    - godot
   exclusions:
-    generated: lax
     presets:
-      - comments
       - common-false-positives
-      - legacy
-      - std-error-handling
-    paths:
-      - third_party$
-      - builtin$
-      - examples$
 formatters:
+  enable:
+    - gofumpt
   exclusions:
-    generated: lax
     paths:
       - third_party$
       - builtin$
