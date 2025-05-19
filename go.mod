@@ -24,7 +24,7 @@ require (
 	github.com/go-tstr/tstr v0.2.0
 	github.com/golang-migrate/migrate/v4 v4.18.3
 	github.com/heppu/errgroup v1.0.0
-	github.com/jackc/pgx/v5 v5.7.4
+	github.com/jackc/pgx/v5 v5.7.5
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/ogen-go/ogen v1.12.0
 	github.com/stretchr/testify v1.10.0
