@@ -14,10 +14,8 @@ NEW_MODULE  := $(patsubst %.git,%, ${NEW_MODULE})
 NEW_PROJECT := ${NEW_MODULE:${GH_INSTANCE}/%=%}
 NEW_NAME    ?= $(notdir ${NEW_MODULE})
 NEW_CMD_DIR	:= cmd/${NEW_NAME}
-
-ifeq ($(findstring GNU,$(shell strings $$(which sed))),)
-    SED_INPLACE_ARG := ''
-endif
+# Sed go alternative
+GOSED := go tool github.com/rwtodd/Go.Sed/cmd/sed-go
 
 .PHONY: rename
 rename:
@@ -27,11 +25,11 @@ rename:
 	@printf "PROJECT: ${NEW_PROJECT}\n"
 	@printf "NAME:    ${NEW_NAME}\n\n"
 	@go mod edit -module ${NEW_MODULE}
-	@find . -type f -name '*.go' -exec sed -i ${SED_INPLACE_ARG} 's|${OLD_MODULE}|${NEW_MODULE}|g' {} \;
+	@find . -type f -name '*.go' -exec ${GOSED} -i 's|${OLD_MODULE}|${NEW_MODULE}|g' {} \;
 	@mv ${OLD_CMD_DIR} ${NEW_CMD_DIR}
-	@sed -i ${SED_INPLACE_ARG} 's|${OLD_CMD_DIR}|${NEW_CMD_DIR}|g' ./applicationtest/application_test.go
-	@sed -i ${SED_INPLACE_ARG} 's|${OLD_PROJECT}|${NEW_PROJECT}|g' ./README.md
-	@sed -i ${SED_INPLACE_ARG} 's|${OLD_NAME}|${NEW_NAME}|g' ./Makefile
-	@sed -i ${SED_INPLACE_ARG} 's|${OLD_NAME}|${NEW_NAME}|g' ./Dockerfile
-	@printf "\nProject renamed succesfully, deleting rename.mk\n"
+	@${GOSED} -i 's|${OLD_CMD_DIR}|${NEW_CMD_DIR}|g' ./applicationtest/application_test.go
+	@${GOSED} -i 's|${OLD_PROJECT}|${NEW_PROJECT}|g' ./README.md
+	@${GOSED} -i 's|${OLD_NAME}|${NEW_NAME}|g' ./Makefile
+	@${GOSED} -i 's|${OLD_NAME}|${NEW_NAME}|g' ./Dockerfile
+	@printf "\nProject renamed successfully, deleting rename.mk\n"
 	@rm rename.mk

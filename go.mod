@@ -5,6 +5,7 @@ go 1.24.2
 tool (
 	github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 	github.com/ogen-go/ogen/cmd/ogen
+	github.com/rwtodd/Go.Sed/cmd/sed-go
 	gotest.tools/gotestsum
 )
 
@@ -294,6 +295,7 @@ require (
 	github.com/raeperd/recvcheck v0.2.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
+	github.com/rwtodd/Go.Sed v0.0.0-20250326002959-ba712dc84b62 // indirect
 	github.com/ryancurrah/gomodguard v1.4.1 // indirect
 	github.com/ryanrolds/sqlclosecheck v0.5.1 // indirect
 	github.com/sagikazarmark/locafero v0.7.0 // indirect
