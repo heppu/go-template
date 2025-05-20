@@ -1,7 +1,6 @@
 ## Requirements:
 #	- go
 #	- awk
-#	- sed
 #	- printf
 #	- cut
 #	- uniq
@@ -14,6 +13,11 @@
 # For scratch image to work CGO has to be disabled.
 # If you need to use CGO, you can override this and use a different base image.
 export CGO_ENABLED ?= 0
+
+### Tools
+GOTESTSUM := go tool gotest.tools/gotestsum
+GOSED     := go tool github.com/rwtodd/Go.Sed/cmd/sed-go
+GOCILINT  := go tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 
 ### Static variables
 DIST_DIR          := target/dist
@@ -59,11 +63,6 @@ SWAGGER_UI_DIR     := ./server/swaggerui
 SWAGGER_OLD_URL    := https://petstore.swagger.io/v2/swagger.json
 SWAGGER_NEW_URL    := /docs/openapi.yaml
 
-# Sed inplace replace compatibility with BSD sed
-ifeq ($(findstring GNU,$(shell strings $$(which sed))),)
-    SED_INPLACE_ARG := ''
-endif
-
 .DEFAULT_GOAL := help
 .PHONY: help
 help: ## Show help
@@ -107,13 +106,13 @@ test: test/unit test/app ## Run all tests and show coverage
 test/unit: ## Run unit tests
 	rm -rf ${UNIT_BIN_COV_DIR} ${UNIT_TXT_COV_DIR} ${UNIT_JUNIT_DIR}
 	mkdir -p ${UNIT_BIN_COV_DIR} ${UNIT_TXT_COV_DIR} ${UNIT_JUNIT_DIR}
-	CGO_ENABLED=1 go tool gotest.tools/gotestsum --junitfile=${UNIT_JUNIT_DIR}/junit.xml -- -race -covermode=atomic -coverprofile=${UNIT_TXT_COV_DIR}/cover.txt ./... -test.gocoverdir=$(abspath ${UNIT_BIN_COV_DIR})
+	CGO_ENABLED=1 ${GOTESTSUM} --junitfile=${UNIT_JUNIT_DIR}/junit.xml -- -race -covermode=atomic -coverprofile=${UNIT_TXT_COV_DIR}/cover.txt ./... -test.gocoverdir=$(abspath ${UNIT_BIN_COV_DIR})
 
 .PHONY: test/app
 test/app: ## Run application tests
 	rm -rf ${APP_BIN_DIR} ${APP_TXT_COV_DIR} ${APP_JUNIT_DIR}
 	mkdir -p ${APP_BIN_DIR} ${APP_TXT_COV_DIR} ${APP_JUNIT_DIR}
-	CGO_ENABLED=1 GOCOVERDIR=$(abspath ${APP_BIN_DIR}) go tool gotest.tools/gotestsum --junitfile=${APP_JUNIT_DIR}/junit.xml -- -tags=applicationtest -count=1 ./applicationtest/...
+	CGO_ENABLED=1 GOCOVERDIR=$(abspath ${APP_BIN_DIR}) ${GOTESTSUM} --junitfile=${APP_JUNIT_DIR}/junit.xml -- -tags=applicationtest -count=1 ./applicationtest/...
 	go tool covdata textfmt -i=${APP_BIN_DIR} -o ${APP_TXT_COV_DIR}/cover.txt
 
 .PHONY: test/app-recreate
@@ -127,7 +126,7 @@ test/app-otel: telemetry-up ## Run application tests with OpenTelemetry
 
 .PHONY: lint
 lint: ## Run linter
-	CGO_ENABLED=1 go tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint run ./...
+	CGO_ENABLED=1 ${GOCILINT} run ./...
 
 .PHONY: telemetry-up
 telemetry-up: ## Start telemetry stack
@@ -164,7 +163,7 @@ update-swagger-ui: ## Update Swagger UI
 	curl -s -L https://github.com/swagger-api/swagger-ui/archive/refs/tags/v${SWAGGER_UI_VERSION}.tar.gz | \
 		tar -zxv --strip-components=2 -C ${SWAGGER_UI_DIR} swagger-ui-${SWAGGER_UI_VERSION}/dist/
 	rm ${SWAGGER_UI_DIR}/*.map
-	sed -i ${SED_INPLACE_ARG} 's|${SWAGGER_OLD_URL}|${SWAGGER_NEW_URL}|g' ./server/swaggerui/swagger-initializer.js
+	${GOSED} -i 's|${SWAGGER_OLD_URL}|${SWAGGER_NEW_URL}|g' ./server/swaggerui/swagger-initializer.js
 
 .PHONY: clean
 clean: ## Clean up environment
