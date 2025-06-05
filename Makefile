@@ -1,9 +1,6 @@
 ## Requirements:
 #	- go
-#	- awk
 #	- printf
-#	- cut
-#	- uniq
 #	- curl
 #	- docker
 #	- docker-compose
@@ -18,6 +15,7 @@ export CGO_ENABLED ?= 0
 GOTESTSUM := go tool gotest.tools/gotestsum
 GOSED     := go tool github.com/rwtodd/Go.Sed/cmd/sed-go
 GOCILINT  := go tool github.com/golangci/golangci-lint/v2/cmd/golangci-lint
+GOGAWK    := go tool github.com/benhoyt/goawk
 
 ### Static variables
 DIST_DIR          := target/dist
@@ -38,16 +36,16 @@ NOOP              :=
 SPACE             := ${NOOP} ${NOOP}
 
 ### Build variables
-TARGET            = demo
-TARGET_DIR        = ${DIST_DIR}/${TARGET}
-TARGET_BIN        = ${TARGET_DIR}/${TARGET}
-TARGET_PKG        = ./cmd/${TARGET}
+TARGET     = demo
+TARGET_DIR = ${DIST_DIR}/${TARGET}
+TARGET_BIN = ${TARGET_DIR}/${TARGET}
+TARGET_PKG = ./cmd/${TARGET}
 
 ### Override these in CI
-IMG_REG           ?=
-IMG_REPO          ?=
-IMG_NAME		  ?= $(subst ${SPACE},/,$(filter-out ,$(strip ${IMG_REG} ${IMG_REPO} ${TARGET})))
-IMG_TAGS          ?= dev
+IMG_REG  ?=
+IMG_REPO ?=
+IMG_NAME ?= $(subst ${SPACE},/,$(filter-out ,$(strip ${IMG_REG} ${IMG_REPO} ${TARGET})))
+IMG_TAGS ?= dev
 
 ### Docker build variables
 ### Transform the image tags to lowercase to avoid issues with docker buildx
@@ -55,7 +53,7 @@ IMG_TARGET_ARGS = $(shell echo '${IMG_TAGS:%=-t ${IMG_NAME}:%}' | tr '[:upper:]'
 
 ### App environment variables
 OTEL_ENV_VARS := OTEL_EXPORTER_OTLP_ENDPOINT="http://127.0.0.1:4318" OTEL_EXPORTER_OTLP_PROTO=http OTEL_EXPORTER_OTLP_INSECURE=true OTEL_SERVICE_NAME=${TARGET}
-APP_ENV_VARS      := API_ADDR="127.0.0.1:8080" ${OTEL_ENV_VARS}
+APP_ENV_VARS  := API_ADDR="127.0.0.1:8080" ${OTEL_ENV_VARS}
 
 ### Swagger UI
 SWAGGER_UI_VERSION := 5.21.0
@@ -66,7 +64,7 @@ SWAGGER_NEW_URL    := /docs/openapi.yaml
 .DEFAULT_GOAL := help
 .PHONY: help
 help: ## Show help
-	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z0-9_\/-]+:.*?##/ { printf "  \033[36m%-20s\033[0m  %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+	@${GOGAWK} 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z0-9_\/-]+:.*?##/ { printf "  \033[36m%-20s\033[0m  %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 .PHONY: all
 all: clean generate lint test bin img ## Test, lint and build project
@@ -153,7 +151,7 @@ generate: ## Run code generators
 trace: ## Collect and open trace data
 	@printf "\nGenerating trace files...\n"
 	@mkdir -p ${TRACE_DIR}
-	wget -O ${TRACE_FILE} "http://127.0.0.1:6060/debug/pprof/trace?seconds=5"
+	curl -O ${TRACE_FILE} "http://127.0.0.1:6060/debug/pprof/trace?seconds=5"
 	@go tool trace ${TRACE_FILE}
 
 .PHONY: update-swagger-ui
