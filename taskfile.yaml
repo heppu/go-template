@@ -1,0 +1,66 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  DIST_DIR: "target/dist"
+  TEST_DIR: "target/test"
+  TRACE_DIR: "target/trace"
+  TRACE_FILE: "{{.TRACE_DIR}}/trace.out"
+  UNIT_COV_DIR: "{{.TEST_DIR}}/unit"
+  UNIT_BIN_COV_DIR: "{{.UNIT_COV_DIR}}/cov/bin"
+  UNIT_TXT_COV_DIR: "{{.UNIT_COV_DIR}}/cov/txt"
+  UNIT_JUNIT_DIR: "{{.UNIT_COV_DIR}}/junit"
+  APP_COV_DIR: "{{.TEST_DIR}}/application"
+  APP_BIN_DIR: "{{.APP_COV_DIR}}/cov/bin"
+  APP_TXT_COV_DIR: "{{.APP_COV_DIR}}/cov/txt"
+  APP_JUNIT_DIR: "{{.APP_COV_DIR}}/junit"
+  CMB_COV_DIR: "{{.TEST_DIR}}/combined"
+  CMB_TXT_COV_DIR: "{{.CMB_COV_DIR}}/cov/txt"
+  TARGET: "demo"
+  TARGET_DIR: "{{.DIST_DIR}}/{{.TARGET}}"
+  TARGET_BIN: "{{.TARGET_DIR}}/{{.TARGET}}"
+  TARGET_PKG: ./cmd/{{.TARGET}}
+  IMG_REG: ""
+  IMG_REPO: ""
+  IMG_NAME: "{{.TARGET }}"
+  IMG_TAGS: dev
+  OTEL_ENV_VARS: "OTEL_EXPORTER_OTLP_ENDPOINT='http://127.0.0.1:4318' OTEL_EXPORTER_OTLP_PROTO=http OTEL_EXPORTER_OTLP_INSECURE=true OTEL_SERVICE_NAME={{.TARGET}}"
+  APP_ENV_VARS: "API_ADDR='127.0.0.1:8080' {{.OTEL_ENV_VARS}}"
+
+tasks:
+  bin:
+    - mkdir -p {{.TARGET_DIR}}
+    - go build -o  {{.TARGET_BIN}} {{.TARGET_PKG}}
+
+  img:
+    deps: [bin]
+    cmds:
+      - docker buildx build -f ./Dockerfile {{.IMG_TARGET_ARGS}} {{.TARGET_DIR}}
+
+  run/bin:
+    deps: [bin, telemetry-up, db-up]
+    cmds:
+      - echo Starting server at http://127.0.0.1:8080
+      - echo Swagger UI available at http://127.0.0.1:8080/docs/swaggerui
+      - "{{.APP_ENV_VARS}} {{.TARGET_BIN}}"
+
+  run/img:
+    deps: [img, telemetry-up, db-up]
+    cmds:
+      - echo Starting server at http://127.0.0.1:8080"
+      - echo Swagger UI available at http://127.0.0.1:8080/docs/swaggerui"
+      - docker run -it --network=host --cpus=1 -m128M {{APP_ENV_VARS}} {{IMG_NAME}}:dev
+
+  telemetry-up:
+    cmds:
+      - docker compose -f ./telemetry/docker-compose.yaml up -d --wait
+      - echo Jaeger UI available at http://127.0.0.1:16686
+
+  telemetry-down:
+    cmd: docker compose -f ./telemetry/docker-compose.yaml down
+
+  db-up:
+    cmd: docker compose up -d --wait
+
+  db-down:
+    cmd: docker compose down
