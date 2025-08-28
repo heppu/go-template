@@ -22,14 +22,14 @@ require (
 	github.com/go-srvc/mods/sqlxmod v0.2.3
 	github.com/go-srvc/mods/tracemod v0.2.3
 	github.com/go-srvc/srvc v0.2.0
-	github.com/go-tstr/golden v0.1.0
+	github.com/go-tstr/golden v0.1.1
 	github.com/go-tstr/tstr v0.2.1
 	github.com/golang-migrate/migrate/v4 v4.18.3
 	github.com/heppu/errgroup v1.0.0
 	github.com/jackc/pgx/v5 v5.7.5
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/ogen-go/ogen v1.14.0
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 	go.opentelemetry.io/otel v1.37.0
 	go.opentelemetry.io/otel/metric v1.37.0
 	go.opentelemetry.io/otel/trace v1.37.0
