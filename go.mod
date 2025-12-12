@@ -23,7 +23,7 @@ require (
 	github.com/go-srvc/mods/tracemod v0.2.3
 	github.com/go-srvc/srvc v0.2.0
 	github.com/go-tstr/golden v0.1.1
-	github.com/go-tstr/tstr v0.2.4
+	github.com/go-tstr/tstr v0.2.5
 	github.com/golang-migrate/migrate/v4 v4.19.1
 	github.com/heppu/errgroup v1.0.0
 	github.com/jackc/pgx/v5 v5.7.6
@@ -386,7 +386,7 @@ require (
 	golang.org/x/mod v0.29.0 // indirect
 	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/oauth2 v0.30.0 // indirect
-	golang.org/x/sync v0.18.0 // indirect
+	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect
 	golang.org/x/term v0.37.0 // indirect
 	golang.org/x/text v0.31.0 // indirect
