@@ -31,5 +31,6 @@ rename:
 	@${GOSED} -i 's|${OLD_PROJECT}|${NEW_PROJECT}|g' ./README.md
 	@${GOSED} -i 's|${OLD_NAME}|${NEW_NAME}|g' ./Makefile
 	@${GOSED} -i 's|${OLD_NAME}|${NEW_NAME}|g' ./Dockerfile
+	@gofmt -w .
 	@printf "\nProject renamed successfully, deleting rename.mk\n"
 	@rm rename.mk
