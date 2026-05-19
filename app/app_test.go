@@ -39,6 +39,7 @@ func TestApp_Healthz_PropagateError(t *testing.T) {
 
 type MockStore struct {
 	app.Store
+
 	err error
 }
 

@@ -15,6 +15,7 @@ import (
 // Store wraps the sqlxmod module and provides an interface to interact with the database.
 type Store struct {
 	srvc.Module
+
 	db NamedDB
 }
 
