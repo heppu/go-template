@@ -333,8 +333,8 @@ github.com/go-srvc/mods/sqlxmod v1.3.0 h1:4HtHeLUkb4jj3anByaaWOfIGz7mlV3hl/s5aDc
 github.com/go-srvc/mods/sqlxmod v1.3.0/go.mod h1:U9owlrRlLsp9LpItUNow0qmOJNyHc7PeWUCv2xhdjqU=
 github.com/go-srvc/mods/tracemod v1.3.0 h1:ckGSU91jn2qJbjfEQs0KMz43UbIvC9SsqvNabVeVS1c=
 github.com/go-srvc/mods/tracemod v1.3.0/go.mod h1:2S5h1S+G01KxJqJBQGUYfY3KX1wRNKuRNs+IhEYhdAY=
-github.com/go-srvc/srvc v1.0.0 h1:T8t7U9ht/1Ivc6xXJSalK+MT3REXGT3knX3lWLuArUg=
-github.com/go-srvc/srvc v1.0.0/go.mod h1:NEXodQ8red+Gm+tSfi2RleSzU5xgYdiK+F1N/1hS+2k=
+github.com/go-srvc/srvc v1.1.1 h1:K7VRUccfece3zTXujj/V86A4yWjlcWzQwrgkaTNYUFQ=
+github.com/go-srvc/srvc v1.1.1/go.mod h1:GAgjWeWgojoPcjy2u5GRgOP6LLSpXN7kz+rtF+fpm30=
 github.com/go-task/slim-sprig/v3 v3.0.0 h1:sUs3vkvUymDpBKi3qH1YSqBQk9+9D/8M2mN1vB6EwHI=
 github.com/go-task/slim-sprig/v3 v3.0.0/go.mod h1:W848ghGpv3Qj3dhTPRyJypKRiqCdHZiAzKg9hl15HA8=
 github.com/go-toolsmith/astcast v1.1.0 h1:+JN9xZV1A+Re+95pgnMgDboWNVnIMMQXwfBwLRPgSC8=
