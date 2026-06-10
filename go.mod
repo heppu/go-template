@@ -1,6 +1,6 @@
 module github.com/heppu/go-template
 
-go 1.26.3
+go 1.26.4
 
 tool (
 	github.com/benhoyt/goawk
@@ -15,13 +15,13 @@ require (
 	github.com/XSAM/otelsql v0.42.0
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.2.0
-	github.com/go-srvc/mods/httpmod v1.4.0
-	github.com/go-srvc/mods/logmod v1.4.1
-	github.com/go-srvc/mods/metermod v1.4.1
-	github.com/go-srvc/mods/sigmod v1.4.0
-	github.com/go-srvc/mods/sqlxmod v1.4.1
-	github.com/go-srvc/mods/tracemod v1.4.1
-	github.com/go-srvc/srvc v1.2.0
+	github.com/go-srvc/mods/httpmod v1.5.0
+	github.com/go-srvc/mods/logmod v1.5.0
+	github.com/go-srvc/mods/metermod v1.5.0
+	github.com/go-srvc/mods/sigmod v1.5.0
+	github.com/go-srvc/mods/sqlxmod v1.5.0
+	github.com/go-srvc/mods/tracemod v1.5.0
+	github.com/go-srvc/srvc v1.3.0
 	github.com/go-tstr/golden v0.1.1
 	github.com/go-tstr/tstr v0.2.6
 	github.com/golang-migrate/migrate/v4 v4.19.1
@@ -359,7 +359,7 @@ require (
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	go.yaml.in/yaml/v4 v4.0.0-rc.4 // indirect
 	golang.org/x/crypto v0.51.0 // indirect
-	golang.org/x/exp v0.0.0-20260529124908-c761662dc8c9 // indirect
+	golang.org/x/exp v0.0.0-20260603202125-055de637280b // indirect
 	golang.org/x/exp/typeparams v0.0.0-20260508232706-74f9aab9d74a // indirect
 	golang.org/x/mod v0.36.0 // indirect
 	golang.org/x/net v0.55.0 // indirect
