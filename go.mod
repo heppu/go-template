@@ -15,12 +15,12 @@ require (
 	github.com/XSAM/otelsql v0.42.0
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.2.0
-	github.com/go-srvc/mods/httpmod v1.6.0
-	github.com/go-srvc/mods/logmod v1.6.0
-	github.com/go-srvc/mods/metermod v1.6.0
-	github.com/go-srvc/mods/sigmod v1.6.0
-	github.com/go-srvc/mods/sqlxmod v1.6.0
-	github.com/go-srvc/mods/tracemod v1.6.0
+	github.com/go-srvc/mods/httpmod v1.7.0
+	github.com/go-srvc/mods/logmod v1.7.0
+	github.com/go-srvc/mods/metermod v1.7.0
+	github.com/go-srvc/mods/sigmod v1.7.0
+	github.com/go-srvc/mods/sqlxmod v1.7.0
+	github.com/go-srvc/mods/tracemod v1.7.0
 	github.com/go-srvc/srvc v1.4.0
 	github.com/go-tstr/golden v0.1.1
 	github.com/go-tstr/tstr v0.2.6
