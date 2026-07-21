@@ -15,13 +15,13 @@ require (
 	github.com/XSAM/otelsql v0.43.0
 	github.com/go-faster/errors v0.7.1
 	github.com/go-faster/jx v1.2.0
-	github.com/go-srvc/mods/httpmod v1.8.0
-	github.com/go-srvc/mods/logmod v1.8.0
-	github.com/go-srvc/mods/metermod v1.8.0
-	github.com/go-srvc/mods/sigmod v1.8.0
-	github.com/go-srvc/mods/sqlxmod v1.8.0
-	github.com/go-srvc/mods/tracemod v1.8.0
-	github.com/go-srvc/srvc v1.5.0
+	github.com/go-srvc/mods/httpmod v1.9.0
+	github.com/go-srvc/mods/logmod v1.9.0
+	github.com/go-srvc/mods/metermod v1.9.0
+	github.com/go-srvc/mods/sigmod v1.9.0
+	github.com/go-srvc/mods/sqlxmod v1.9.0
+	github.com/go-srvc/mods/tracemod v1.9.0
+	github.com/go-srvc/srvc v1.5.1
 	github.com/go-tstr/golden v0.1.1
 	github.com/go-tstr/tstr v0.2.6
 	github.com/golang-migrate/migrate/v4 v4.19.1
@@ -360,7 +360,7 @@ require (
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	go.yaml.in/yaml/v4 v4.0.0-rc.4 // indirect
 	golang.org/x/crypto v0.54.0 // indirect
-	golang.org/x/exp v0.0.0-20260709172345-9ea1abe57597 // indirect
+	golang.org/x/exp v0.0.0-20260718201538-764159d718ef // indirect
 	golang.org/x/exp/typeparams v0.0.0-20260508232706-74f9aab9d74a // indirect
 	golang.org/x/mod v0.38.0 // indirect
 	golang.org/x/net v0.57.0 // indirect
