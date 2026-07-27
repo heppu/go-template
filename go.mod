@@ -13,7 +13,7 @@ tool (
 require (
 	github.com/KimMachineGun/automemlimit v0.7.5
 	github.com/XSAM/otelsql v0.43.0
-	github.com/go-faster/errors v0.7.1
+	github.com/go-faster/errors v0.8.0
 	github.com/go-faster/jx v1.2.0
 	github.com/go-srvc/mods/httpmod v1.9.0
 	github.com/go-srvc/mods/logmod v1.9.0
