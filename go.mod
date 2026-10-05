@@ -15,12 +15,12 @@ require (
 	github.com/XSAM/otelsql v0.44.0
 	github.com/go-faster/errors v0.8.0
 	github.com/go-faster/jx v1.2.0
-	github.com/go-srvc/mods/httpmod v1.14.0
-	github.com/go-srvc/mods/logmod v1.15.0
-	github.com/go-srvc/mods/metermod v1.15.0
-	github.com/go-srvc/mods/sigmod v1.14.0
+	github.com/go-srvc/mods/httpmod v1.15.1
+	github.com/go-srvc/mods/logmod v1.15.1
+	github.com/go-srvc/mods/metermod v1.15.2
+	github.com/go-srvc/mods/sigmod v1.14.1
 	github.com/go-srvc/mods/sqlxmod v1.15.0
-	github.com/go-srvc/mods/tracemod v1.15.0
+	github.com/go-srvc/mods/tracemod v1.15.1
 	github.com/go-srvc/srvc v1.12.0
 	github.com/go-tstr/golden v0.1.1
 	github.com/go-tstr/tstr v0.2.6
@@ -30,9 +30,9 @@ require (
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/ogen-go/ogen v1.24.0
 	github.com/stretchr/testify v1.12.1
-	go.opentelemetry.io/otel v1.46.0
-	go.opentelemetry.io/otel/metric v1.46.0
-	go.opentelemetry.io/otel/trace v1.46.0
+	go.opentelemetry.io/otel v1.47.0
+	go.opentelemetry.io/otel/metric v1.47.0
+	go.opentelemetry.io/otel/trace v1.47.0
 	go.uber.org/automaxprocs v1.6.0
 )
 
@@ -349,7 +349,7 @@ require (
 	go.opentelemetry.io/otel/exporters/stdout/stdoutlog v0.22.0 // indirect
 	go.opentelemetry.io/otel/exporters/stdout/stdoutmetric v1.46.0 // indirect
 	go.opentelemetry.io/otel/exporters/stdout/stdouttrace v1.46.0 // indirect
-	go.opentelemetry.io/otel/log v0.22.0 // indirect
+	go.opentelemetry.io/otel/log v1.47.0 // indirect
 	go.opentelemetry.io/otel/sdk v1.46.0 // indirect
 	go.opentelemetry.io/otel/sdk/log v0.22.0 // indirect
 	go.opentelemetry.io/otel/sdk/metric v1.46.0 // indirect
