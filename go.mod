@@ -21,7 +21,7 @@ require (
 	github.com/go-srvc/mods/sigmod v1.14.1
 	github.com/go-srvc/mods/sqlxmod v1.15.0
 	github.com/go-srvc/mods/tracemod v1.15.1
-	github.com/go-srvc/srvc v1.12.0
+	github.com/go-srvc/srvc v1.12.1
 	github.com/go-tstr/golden v0.1.1
 	github.com/go-tstr/tstr v0.2.6
 	github.com/golang-migrate/migrate/v4 v4.20.1
