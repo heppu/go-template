@@ -26,7 +26,7 @@ require (
 	github.com/go-tstr/tstr v0.2.6
 	github.com/golang-migrate/migrate/v4 v4.20.1
 	github.com/heppu/errgroup v1.0.0
-	github.com/jackc/pgx/v5 v5.11.0
+	github.com/jackc/pgx/v5 v5.12.0
 	github.com/jmoiron/sqlx v1.4.0
 	github.com/ogen-go/ogen v1.24.0
 	github.com/stretchr/testify v1.12.1
@@ -192,7 +192,7 @@ require (
 	github.com/inhies/go-bytesize v0.0.0-20220417184213-4913239db9cf // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
-	github.com/jackc/puddle/v2 v2.2.2 // indirect
+	github.com/jackc/puddle/v2 v2.2.3 // indirect
 	github.com/jgautheron/goconst v1.11.0 // indirect
 	github.com/jjti/go-spancheck v0.6.5 // indirect
 	github.com/jonboulle/clockwork v0.5.0 // indirect
